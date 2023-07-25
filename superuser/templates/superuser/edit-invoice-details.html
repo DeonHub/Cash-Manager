@@ -1,0 +1,161 @@
+{% extends 'superuser/base.html' %}
+ 
+{% block content %}
+
+
+<div class="form-body">
+    <div class="row">
+        <div class="form-holder">
+            <div class="form-content">
+                <div class="form-items">
+                    <h2 class="text-center mb-3" >Edit Client Details</h2>
+
+                    <form class="" action="" method="post" enctype="multipart/form-data">
+
+                        {% csrf_token %}
+
+                        <div class="input-group mt-3">
+                            <label class="input-group-text" for="start_date">Signers name</label>
+                            <input class="form-control" type="text" name='signers_name' value="{{ invoice_detail.signers_name}}" id="signers_name"  required>
+                        </div>
+
+
+                         <div class="input-group mt-3">
+                            <label class="input-group-text" for="start_date">Company name</label>
+                            <input class="form-control" type="text" name='company_name' value="{{ invoice_detail.company_name}}" id="company_name"  required>
+                        </div>
+
+
+                         
+
+
+                         <div class="input-group mt-3">
+                            <label class="input-group-text" for="signature">Upload signature</label>
+                            <input type="file" class="form-control" id="signature" name="signature"  accept="image/png, .jpeg, .jpg, image/gif" onclick="getFile()">
+                          </div>
+                          <p style="font-size: 10px;">Original file: {{ invoice_detail.signature.url }}</p>
+
+                          
+                          <div class="mt-4 ml-3" id="signature-preview">
+                            <img src="{{ invoice_detail.signature.url }}" alt="signature-preview" class="image" width="250px" heigth="250px">
+                            <span class="default-text"></span>
+                          </div>
+
+                          {% comment %} <img src="{{ invoice_detail.signature.url }}" alt="signature-preview" class="image" width="50px" heigth="50px"> {% endcomment %}
+
+                          <div class="input-group mt-3">
+                            <label class="input-group-text" for="logo">Upload logo</label>
+                            <input type="file" class="form-control" id="logo" name="logo" accept="image/png, .jpeg, .jpg, image/gif" onclick="getLogo()">
+                          </div>
+                          <p style="font-size: 10px;">Original file: {{ invoice_detail.logo.url }}</p>
+
+                          <div class="mt-4 ml-3" id="logo-preview">
+                            <img src="{{ invoice_detail.logo.url }}" alt="logo-preview" class="logo-image" width="250px" heigth="250px">
+                            <span class="logo-text"></span>
+                          </div>
+
+
+
+
+
+                          
+
+                          <p>Contact Us</p>
+
+                          <div class="input-group mt-3">
+                            <label class="input-group-text" for="start_date">Contact</label>
+                            <input class="form-control" type='tel' name='contact' value="{{ invoice_detail.contact }}" id="contact"  required>
+                        </div>
+
+
+                        <div class="input-group mt-3">
+                            <label class="input-group-text" for="start_date">Email</label>
+                            <input class="form-control" type='email' name='email' value="{{ invoice_detail.email }}" id="email"  required>
+                        </div>
+
+
+                          <div class="input-group mt-3">
+                            <label class="input-group-text" for="start_date">Postal Address</label>
+                            <input class="form-control" type="text" id="postal_address" name="postal_address" value="{{ invoice_detail.postal_address }}" >
+                        </div>
+
+                          <div class="input-group mt-3">
+                            <label class="input-group-text" for="start_date">Digital Address</label>
+                            <input class="form-control" type="text" id="digital_address" name="digital_address" value="{{ invoice_detail.digital_address }}" >
+                        </div>
+
+                          <div class="input-group mt-3">
+                            <label class="input-group-text" for="start_date">Website</label>
+                            <input class="form-control" type="text" id="website" name="website" value="{{ invoice_detail.website }}" >
+                        </div>
+
+                          <div class="input-group mt-3">
+                            <label class="input-group-text" for="start_date">Location</label>
+                            <input class="form-control" type="text" id="location" name="location" value="{{ invoice_detail.location }}" >
+
+                            {% comment %} <textarea type="text" rows="10" cols="90" class="form-control" name="location" id="location" value="{{ invoice_detail.location }}"></textarea> {% endcomment %}
+                        </div>
+
+
+
+                        <p class="mt-5">Social Media</p>
+
+                        <div class="input-group">
+                            <label class="input-group-text" for="start_date">Whatsapp</label>
+                          <input class="form-control" type="text" id="whatsapp" name="whatsapp" value="{{ invoice_detail.whatsapp }}" >
+                      </div>
+
+                        <div class="input-group mt-3">
+                            <label class="input-group-text" for="start_date">Telegram</label>
+                          <input class="form-control" type="text" id="telegram" name="telegram" value="{{ invoice_detail.telegram }}" >
+                      </div>
+
+                        <div class="input-group mt-3">
+                            <label class="input-group-text" for="start_date">Facebook</label>
+                          <input class="form-control" type="text" id="facebook" name="facebook" value="{{ invoice_detail.facebook }}" >
+                      </div>
+
+                        <div class="input-group mt-3">
+                            <label class="input-group-text" for="start_date">Twitter</label>
+                          <input class="form-control" type="text" id="twitter" name="twitter" value="{{ invoice_detail.twitter }}" >
+                      </div>
+                        <div class="input-group mt-3">
+                            <label class="input-group-text" for="start_date">Instagram</label>
+                          <input class="form-control" type="text" id="instagram" name="instagram" value="{{ invoice_detail.instagram }}" >
+                      </div>
+
+
+                      <p class="mt-5">Our Services</p>
+                      <div >
+                        <textarea type="text" rows="10" cols="10" class="form-control" name="services" id="services" placeholder="Type services here....">{{ invoice_detail.services }}</textarea>
+                      </div>
+
+
+                      <p class="mt-5">About Us</p>
+                      <div >
+                        <textarea type="text" rows="10" cols="10" class="form-control" name="about" id="about" placeholder="Type about information here....">{{ invoice_detail.about }}</textarea>
+                      </div>
+
+
+
+
+
+
+
+
+                          <div class="mt-3 text-center">
+                            <a onclick="window.history.go(-1); return false;"><button type="button" class="btn btn-primary btn-sm mr-3" >Back</button></a>
+  
+                            <button id="submit" type="submit" class="btn btn-sm ml-3" style="background-color: #006c40; color: #fff">Submit</button>
+                        </div>
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

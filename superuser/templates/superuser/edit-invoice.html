@@ -1,0 +1,299 @@
+{% extends 'superuser/base.html' %}
+ 
+{% block content %}
+
+{% comment %} 
+        <form action="" method="post" id="myFormID" name="myFormName" data-items-url="{% url 'superuser:ajax_load_items' %}" novalidate>
+            {% csrf_token %}
+            {% comment %} <input type='text' name='branch' value="" id="branch" > 
+
+            <select id="branch" name="branch" required >
+                <option selected>Branch</option>
+                {% for branch in branches %}
+                   {% if branch.name == invoice.branch %}
+                <option selected="selected" value="{{ invoice.branch }}" id="{{ branch.id }}">{{ invoice.branch }}</option>
+                    {% else %}
+                <option value="{{ branch.name }}" id="{{ branch.id }}">{{ branch.name }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+<br>
+            <select id="member_category" name="member_category" required >
+              <option selected>Member Category</option>
+              {% for member_category in member_categories %}
+                {% if member_category.category == invoice.member_category %}
+                <option selected="selected" value="{{ invoice.member_category }}" id="{{ member_category.id }}">{{ invoice.member_category }}</option>
+                {% else %}
+                <option value="{{ member_category.category }}" id="{{ member_category.id }}">{{ member_category.category }}</option>
+                {% endif %}
+              {% endfor %}
+            </select>
+
+            <br>
+
+            <select id="group" name="group" required >
+                <option selected>Group</option>
+                {% for group in groups %}
+                    {% if group.group == invoice.group %}
+                    <option selected="selected" value="{{ invoice.group }}" id="{{ group.id }}">{{ invoice.group }}</option>
+                    {% else %}
+                    <option value="{{ group.group }}" id="{{ group.id }}">{{ group.group }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+
+            <br>
+            <select id="subgroup" name="subgroup" required >
+                <option selected>Subgroup</option>
+                {% for subgroup in subgroups %}
+                    {% if subgroup.subgroup == invoice.subgroup %}
+                    <option selected="selected" value="{{ invoice.subgroup }}" id="{{ subgroup.id }}">{{ invoice.subgroup }}</option>
+                    {% else %}
+                    <option value="{{ subgroup.subgroup }}" id="{{ subgroup.id }}">{{ subgroup.subgroup }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+            <br>
+
+
+
+            <select id="fee_type" name="fee_type" required >
+            {% for fee_type in fee_type %}
+              {% if fee_type.fee_type == invoice.fee_type %}
+                  <option selected="selected" value="{{ fee_type.id }}" id="{{ fee_type.id }}">{{ invoice.fee_type }}</option>
+              {% else %}
+                  <option value="{{ fee_type.id }}" id="{{ fee_type.id }}">{{ fee_type.fee_type }}</option>
+              {% endif %}
+            {% endfor %}
+            </select>
+            <br>
+
+          <select id="fee_description" name="fee_description">
+            {% for fee_description in fee_description %}
+                {% if fee_description.fee_description == invoice.fee_description %}
+              <option value="{{ fee_description.id }}" >{{ invoice.fee_description }}</option>
+                {% else %}
+              <option value="{{ fee_description.id }}" >{{ fee_description.fee_description }}</option>
+              {% endif %}
+            {% endfor %}
+          </select>
+<br>
+
+          <label for='fee_items'>Select Fee Items</label>
+          {% for fee_items in invoice.fee_items.all %}
+                <input type="checkbox" class="fee_items" id="fee_type{{forloop.counter}}" name="" value="{{ fee_items.id }}" onchange="checkFunction()" checked>
+                <label for="fee_type">{{ fee_items }}</label>
+            {% comment %} {% else %}
+                <input type="checkbox" class="fee_items" id="fee_type{{forloop.counter}}" name="fee_items[]" value="{{ fee_items.id }}" onchange="checkFunction()">
+                <label for="fee_type">{{ fee_items.fee_items }}</label> 
+          {% endfor %}
+
+            <br>
+
+            <label for="fee_items">Enter Fee amount</label>
+            {% for fee_items in fee_items %}
+                {% if fee_items.fee_items == invoice.items %}
+            <div id="item_amount{{forloop.counter}}" style="display: none">
+                {% for i in items_amount %}
+            <p>{{ invoice.items }}: <input type="text" class="amount" id="amount{{forloop.counter}}" name="items_amount[]" value="{{ i }}"></p>
+                {% endfor %}      
+            </div>
+                {% else %}
+                <div id="item_amount{{forloop.counter}}" style="display: none">
+                <p>{{ fee_items.fee_items }}: <input type="text" class="amount" id="amount{{forloop.counter}}" name="items_amount[]" ></p>
+                </div>
+                {% endif %}
+            {% endfor %}
+<br>
+       
+            <input type="submit" value="Submit">
+            <br>
+            <input type=button value="Previous Page" onClick="javascript:history.go(-1);">
+        </form> 
+
+
+
+         {% endcomment %}
+
+
+
+
+
+        <div class="form-body" style="margin-top:-5%">
+            <div class="row">
+                <div class="form-holder">
+                    <div class="form-content">
+                        <div class="form-items">
+                            <h2 class="text-center mb-3" >Edit Invoice</h2>
+        
+                            <form action="" method="post" id="myFormID" name="myFormName" data-items-url="{% url 'superuser:ajax_load_items' %}">
+        
+                                {% csrf_token %}
+        
+                             
+
+                              <div class="input-group mt-3">
+                                <label class="input-group-text" for="fee_type">Branch</label>
+
+                                <select class="form-select" name="branch" id="branch" data-groups-url="{% url 'superuser:ajax_load_groups' %}" data-pid="{{ pid }}" required>
+                                    
+                                    {% for branch in branches %}
+                                        {% if branch.name == invoice.branch %}
+                                            <option selected="selected" value="{{ branch.id }}" id="{{ branch.id }}" >{{ branch.name }}</option>
+                                        {% else %}
+                                            <option value="{{ branch.id }}" id="{{ branch.id }}" >{{ branch.name }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                             </select>
+
+                            </div>
+
+                        
+
+
+                            <div class="input-group mt-3">
+                                <label class="input-group-text" for="fee_type">Member Category</label>
+
+                                <select class="form-select" name="member_category" id="member_category" required>
+                                  
+                                    {% for member_category in member_categories %}
+                                        {% if member_category.category == invoice.member_category %}
+                                            <option selected="selected" value="{{ member_category.id }}" id="{{ member_category.id }}">{{ member_category.category }}</option>
+                                        {% else %}  
+                                            <option value="{{ member_category.id }}" id="{{ member_category.id }}" >{{ member_category.category }}</option>  
+                                        {% endif %}
+                                    {% endfor %}
+                             </select>
+
+
+                            </div>
+
+                    
+
+                              <div class="input-group mt-3">
+                                <label class="input-group-text" for="fee_type">Group</label>
+                                <select class="form-select" name="group" id="all_groups" data-subgroups-url="{% url 'superuser:ajax_load_subgroups' %}" data-pid="{{ pid }}">
+                                    <option selected value="{{ invoice.group }}">{{ invoice.group }}</option>
+                                </select>
+
+                            
+                            </div>
+
+                            <div class="input-group mt-3">
+                                <label class="input-group-text" for="subgroup">Subgroup</label>
+                                <select class="form-select" name="subgroup" id="all_subgroups">
+                                    <option selected value="{{ invoice.subgroup }}">{{ invoice.subgroup }}</option>
+                             </select>
+
+                            
+                            
+                            </div>
+
+
+
+
+                            <div class="input-group mt-3">
+                                <label class="input-group-text" for="invoice_type">Invoice Type</label>
+
+                                <select class="form-select" id="invoice_type" name="invoice_type" required >
+                                    {% if invoice.invoice_type == 'expiry' %}
+                                        <option selected="selected" value="{{ invoice.invoice_type }}" id="invoice_type">Expiry</option>
+                                        <option value="non_expiry" id="invoice_type">Non Expiry</option>
+             
+                                   {% else %}
+                                      <option value="expiry" id="invoice_type">Expiry</option>
+
+                                      <option selected="selected" value="{{ invoice.invoice_type }}" id="invoice_type">Non Expiry</option>
+                                    {% endif %} 
+                                </select>
+                          
+                            </div>
+
+
+                            <div class="input-group mt-3">
+                                <label class="input-group-text" for="member_type">Member Type</label>
+
+                                <select class="form-select" id="member_type" name="member_type" required >
+                                    {% if invoice.member_type == 'individual' %}
+                                        <option selected="selected" value="{{ invoice.member_type }}" id="member_type">Individual Members</option>
+                                        <option value="organizational" id="member_type">Organizational Members</option>
+             
+                                   {% else %}
+                                      <option value="individual" id="member_type">Individual Members</option>
+
+                                      <option selected="selected" value="{{ invoice.member_type }}" id="member_type">Organizational Members</option>
+                                    {% endif %} 
+                                </select>
+                          
+                            </div>
+
+                           
+                            <div class="input-group mt-3">
+                                <label class="input-group-text" for="fee_type">Fee Type</label>
+                                <select class="form-select" id="fee_type" name="fee_type" required >
+                                    {% if invoice.fee_type %}
+                                        <option selected="selected" value="{{ invoice.fee_type.id }}" id="{{ fee_type.id }}">{{ invoice.fee_type }}</option>
+                                   {% else %}
+                                        <option value="{{ fee_type.id }}" id="{{ fee_type.id }}">{{ fee_type.fee_type }}</option>
+                                    {% endif %} 
+                                </select>
+                            </div>
+
+                            <div class="input-group mt-3">
+                                <label class="input-group-text" for="fee_description">Fee Description</label>
+                                <select class="form-select" id="fee_description" name="fee_description" required >
+
+
+                                    {% for fee_description in fee_descriptions %}
+                                    {% if fee_description.fee_description == invoice.fee_description %}
+                                       <option selected="selected" value="{{ fee_description.id }}" id="{{ fee_description.id }}">{{ fee_description.fee_description }}</option>
+                                    {% else %}  
+                                       <option value="{{ fee_description.id }}" id="{{ fee_description.id }}">{{ fee_description.fee_description }}</option>  
+                                    {% endif %}
+                                {% endfor %}
+
+
+                                </select>
+                            </div>
+
+ 
+
+                            <div class="input-group mt-3">
+                            <label for='fee_items'>Select Fee Items</label>
+                                <div class="form-check mt-4">
+                            {% for fee_item in stuff %}
+                                  <input type="checkbox" class="fee_items" id="fee_type{{forloop.counter}}" name="{{ fee_items.fee_items }}" onchange="checkFunction()" checked>
+                                  <label for="fee_type">{{ fee_item }}</label><br>
+                            {% endfor %}
+
+                                </div>
+                            </div>
+                  
+                              <br>
+                  
+                              <label for="fee_items">Enter Fee amount</label>
+                             
+                              {% for stuff, item_amount in data.items  %}
+                              <div id="item_amount{{forloop.counter}}"> 
+                                 <p>{{ stuff }}: <input class="col-auto amount form-control-sm ml-3" type="text" id="amount{{forloop.counter}}" name="items_amount[]" value="{{ item_amount }}" placeholder="Enter amount..." > </p>  
+                                                                               
+                              </div>
+                              {% endfor %} 
+
+
+                              <div class="mt-3 text-center">
+                                <a onclick="window.history.go(-1); return false;"><button type="button" class="btn btn-primary btn-sm mr-3" >Back</button></a>
+      
+                                <button id="submit" type="submit" class="btn btn-sm ml-3" style="background-color: #006c40; color: #fff">Submit</button>
+                            </div>
+                            </form>
+        
+        
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+          {% endblock %}

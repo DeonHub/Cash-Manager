@@ -1,0 +1,301 @@
+{% extends 'superuser/base.html' %}
+ 
+{% block content %}
+
+
+<div class="form-body">
+    <div class="row">
+        <div class="form-holder">
+            <div class="form-content">
+                <div class="form-items">
+                    <h2 class="text-center mb-3" >Make Payment</h2>
+
+                    {% comment %} <img src="{{ organizations.logo.url }}" width="250px" height="250px" > {% endcomment %}
+  
+                    <form action="" method="post" id="paymentForm" name="" data-amount-url="{% url 'superuser:ajax_load_amount_due' %}" data-id="{{ assigned.id }}" data-credit-url="{% url 'superuser:ajax_load_credit' %}">
+  
+                        {% csrf_token %}
+
+                
+                        <div class=" mt-3">
+                            <input class="form-control" type="text" id="payers_first_name" name="payers_first_name" value="{{ firstname }}" placeholder="First name..." hidden>
+                        </div>
+        
+                        <div class=" mt-3">
+                            <input class="form-control" type="text" id="payers_last_name" name="payers_last_name" value="{{ surname }}" placeholder="Last name..." hidden>
+                        </div>
+        
+                        <div class=" mt-3">
+                            <input class="form-control" type="tel" id="contact" name="contact"  value="{{ phone }}" placeholder="Contact..." hidden >
+                        </div>
+        
+                        <div class=" mt-3">
+                            <input class="form-control" type="email" id="email" name="email_address"  value="{{ email }}" placeholder="Email..." hidden >
+                        </div>
+  
+                        
+                        <br/>
+                        <label class="">Member Details</label>
+
+                        <div class="input-group mt-3">
+                            <label class="input-group-text" for="start_date">Member</label>
+                            <input class="form-control" type="text" id="user" name="member"  value="{{ assigned.member }}" readonly >
+                        </div>
+
+                        <div class="input-group">
+                            <input class="form-control" type="text" id="member_id" name="member_id"  value="{{ assigned.member_id }}" hidden >
+                        </div>
+
+
+
+                        <div class="input-group mt-3">
+                            <label class="input-group-text" for="start_date">Branch</label>
+                            <input class="form-control" type="text" id="branch" name="branch"  value="{{ assigned.branch }}" readonly >
+                        </div>
+
+                        <div class="input-group mt-3">
+                            <label class="input-group-text" for="start_date">Member Category</label>
+                            <input class="form-control" type="text" id="member_category" name="member_category"  value="{{ assigned.member_category }}" readonly >
+                        </div>
+
+                        <div class="input-group mt-3">
+                            <label class="input-group-text" for="start_date">Group</label>
+                            <input class="form-control" type="text" id="group" name="group"  value="{{ assigned.group }}" readonly >
+                        </div>
+
+                        <div class="input-group mt-3">
+                            <label class="input-group-text" for="start_date">Subgroup</label>
+                            <input class="form-control" type="text" id="subgroup" name="subgroup"  value="{{ assigned.subgroup }}" readonly >
+                        </div>
+
+
+
+                        <div class="input-group">
+                            <input class="form-control" type="text" id="invoice_type" name="invoice_type" value="{{ assigned.invoice_type }}" hidden>
+                        </div>
+        
+                         
+
+                        <div class="input-group mt-3">
+                            <span class="input-group-text" id="basic-addon3">Invoice Type</span>
+                            {% if assigned.invoice_type == "expiry" %}
+                            <input class="form-control" type="text"  value="Expiry Invoice" readonly>
+                            {% else %}
+                            <input class="form-control" type="text" value="Non Expiry Invoice" readonly>
+                            {% endif %}
+                        </div>
+
+  
+
+                        
+                <br/>
+                <label class="mt-3">Payment Details</label>
+                        <div class="input-group">
+                            {% comment %} <label class="input-group-text" for="fee_type">Fee Type</label> {% endcomment %}
+                            <select class="form-select" id="fee_type" name="fee_type" hidden>
+                                <option value="{{ assigned.fee_type.id }}" id="{{ fee_type.id }}">{{ assigned.fee_type }}</option>
+                            </select>
+                        </div>
+
+                        {% comment %} <div class="input-group">
+                            <select class="form-select" id="fee_type_value" name="fee_type_value" hidden>
+                                <option value="{{ assigned.fee_type }}" id="{{ fee_type.id }}">{{ assigned.fee_type }}</option>
+                            </select>
+                        </div> {% endcomment %}
+
+
+                 <div class="input-group">
+                    {% comment %} <label class="input-group-text" for="fee_description">Fee Description</label> {% endcomment %}
+                    <select class="form-select"  id="fee_description" name="fee_description" hidden>
+                        <option value="{{ assigned.fee_description.id }}" id="{{ fee_description.id }}">{{ assigned.fee_description }}</option>
+                    </select>
+                </div>
+                
+
+                {% comment %} <div class="input-group">
+                    <select class="form-select"  id="fee_description_value" name="fee_description_value" hidden>
+                        <option value="{{ assigned.fee_description }}" id="{{ fee_description.id }}">{{ assigned.fee_description }}</option>
+                    </select>
+                </div> {% endcomment %}
+
+
+                    <div class="input-group mt-3">
+                        <span class="input-group-text" id="basic-addon3">Total Outstanding bill ({{ base }})</span>
+                        <input class="form-control" type="text" id="outstanding_bill" name="outstanding_bill" value="{{ assigned.total_invoice }}" readonly >
+                      </div>
+                      <div class="input-group mt-3">
+                        <span class="input-group-text" id="basic-addon3">Assigned Duration</span>
+                        <input class="form-control" type="text" id="assigned_duration" name="assigned_duration" value="{{assigned.install_period}} Day(s)" readonly >
+                      </div>
+
+  
+                    <div class="">
+                        <select class="form-select mt-3" id="payment_status" name="payment_status" onchange="loadDuration(this)" required >
+                            <option selected value="">Payment Status</option>
+                            <option value="part" id="part">Part Payment</option>
+                            <option value="full" id="full">Full Payment</option>
+                        </select>
+                    </div>
+
+
+                    <br/>
+
+
+                <div id="payments" style="display:none;">
+
+                    {% if assigned.invoice_type == "expiry" %}
+                    <div  style="display:none;" id="label">
+                    <label class="mt-3 mb-1">Select Renewal Duration</label>
+
+                   
+                    <div class="form-check" >
+                        {% for period in period %}
+                            {% if period.name != 'None' %}
+                                <input type="radio" class="form-check-input range mt-3" name="install_range" value="{{ period.name }}" id="range{{ forloop.counter }}" onchange="radioCheck2(this)" >
+                                <label class="form-check-label mt-3" for="install_range">{{ period.name }}</label><br/>
+                            {% endif %}
+                      {% endfor %}
+                    </div>
+                </div>
+                   {% endif %}
+      
+
+                   <div class=" mt-3" style="display:none;" id="input">
+                    <input class="form-control" type="text" id="numver" name="install_period" placeholder="Enter period"  disabled >
+                    </div>
+
+
+                    {% if assigned.invoice_type == "expiry" %}
+
+                      <div class="input-group mt-3">
+                        <span class="input-group-text" id="basic-addon3">Outstanding Renewal Bill</span>
+                        {% if  assigned.expiration_bill %}
+                            {% if assigned.expiration_bill < 0 %}
+                            <input class="form-control" type="text" id="expiration_bill" name="expiration_bill"  value="0" readonly >
+
+                            {% else %}
+                             <input class="form-control" type="text" id="expiration_bill" name="expiration_bill" value="{{ assigned.expiration_bill }}" readonly >
+
+                            {% endif %}
+                        {% else %}
+                        <input class="form-control" type="text" id="expiration_bill" name="expiration_bill"  value="0" readonly >
+                      {% endif %}
+                        
+                      </div>
+
+
+
+                    {% comment %} <div class="input-group mt-3">
+                        <span class="input-group-text" id="basic-addon3">Renewal Bill</span>
+                        {% if assigned.install_amount >= assigned.total_invoice %}
+                        <input class="form-control" type="text" id="renewal_bill" name="renewal_bill" value="{{ assigned.total_invoice }}" readonly >
+                        {% else %}
+                        <input class="form-control" type="text" id="renewal_bill" name="renewal_bill" value="{{ assigned.install_amount }}" readonly >
+                        {% endif %}
+                      </div>  {% endcomment %}
+
+
+                    <div class=" mt-3">
+                        <input class="form-control" type="date" id="end_date" name="end_date" value="{{ dated }}" hidden>
+                    
+                    </div>
+                    
+
+                    {% endif %}
+
+                    <div class="input-group mt-3">
+                        <span class="input-group-text" id="basic-addon3">Total amount due ({{ base }})</span>
+                        {% if assigned.invoice_type == "expiry" %}
+                        <input class="form-control" type="text" id="total_amount_due" name="total_amount_due" placeholder="Total amount due..." readonly>
+                        
+                        {% else %}
+                        <input class="form-control" type="text" id="total_amount_due" name="total_amount_due" value="{{ assigned.total_invoice }}"  readonly>
+                        {% endif %}
+
+                    </div>
+
+                    <div class="input-group mt-3">
+                        <span class="input-group-text" id="basic-addon3">Credit Balance ({{ base }})</span>
+                        <input class="form-control" type="text" id="balance" name="outstanding_balance" value="{{ balance }}" readonly>
+                    </div>
+
+                    <div class="input-group mt-3">
+                        <span class="input-group-text" id="basic-addon3">Amount to be paid ({{ base }})</span>
+                        <input class="form-control" type="text" id="paid" name="" placeholder="Amount to be paid..." readonly>
+                    </div>
+                    
+
+
+                    <div class="input-group mt-3">
+                        <span class="input-group-text" id="basic-addon3">Confirmed Amount ({{ base }})</span>
+                        <input class="form-control" type="text" id="amount_paid" name="amount_paid" placeholder="Enter amount paid..." onchange="findArrears()" required>
+                    </div>
+                    <p class="mt-2" style="font-size:13px;">Note: You can edit fee if you wish to <b>pay more</b> than current amount.</p>
+
+
+                    <div class="input-group mt-3" id="arr">
+                        <span class="input-group-text" id="basic-addon3">Arrears ({{ base }})</span>
+                        <input class="form-control" type="text" id="arrears" name="arrears" value="" placeholder="Arrears..." readonly >
+                    </div>
+                    
+                    {% comment %} <div class="input-group mt-3">
+                        <span class="input-group-text" id="basic-addon3">Balance</span>
+                        <input class="form-control" type="text" id="amount_paid" name="amount_paid" placeholder="Enter amount paid..." onchange="findArrears()" required>
+                    </div> {% endcomment %}
+
+
+                    <div class="input-group">
+                        <input class="form-control" type="text" id="charge_percentage" value="{{ service_charge }}" hidden>
+                    </div>
+
+                    <div class="input-group mt-3" id="arr">
+                        <span class="input-group-text" id="basic-addon3">Service Charge({{service_charge}}%)</span>
+                        <input class="form-control" type="text" id="charge" name="charge" value="" placeholder="Service charge fee..." readonly >
+                    </div>
+  
+                  <div class=" mt-3">
+                  <textarea class="form-control" id="remarks" name="remarks" placeholder="Remarks..." ></textarea>
+                
+                  </div>
+
+                </div>
+
+
+
+
+                  <div class="mt-3 text-center">
+                    <a onclick="window.history.go(-1); return false;"><button type="button" class="btn btn-primary btn-sm mr-3" >Back</button></a>
+
+                    <button id="submit" type="submit" class="btn btn-sm ml-3" style="background-color: #006c40; color: #fff">Pay Offline</button>
+                </div>
+  
+                  {% comment %} <center>
+                  <div class="d-flex flex-row" style="float:center;">
+                       <a onclick="window.history.go(-1); return false;"><button type="button" class="btn btn-primary btn-sm mt-3">Back</button></a>
+
+                       <div class="mt-3 ml-3">
+                        <button id="submit" type="submit" class="btn btn-primary btn-sm">Pay Offline</button>
+                        </div>
+                        {% comment %} <div class="mt-3 mr-3">
+                          <button class="btn btn-primary btn-sm">Pay Online</button>
+                      </div> {% endcomment %}
+                      {% comment %} <div class="mt-3">
+                        <button class="btn btn-primary btn-sm">Pay Service Provider</button>
+                    </div> 
+                  </div> 
+                </center> {% endcomment %}
+                  
+
+
+                       
+                    </form>
+  
+            
+                </div>
+            </div>
+        </div>
+    </div>
+  </div> 
+   
+ 
+{% endblock%}

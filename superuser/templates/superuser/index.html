@@ -1,0 +1,584 @@
+{% extends 'superuser/base.html' %}
+
+{% block content %}
+
+<br/>
+
+<div class="row">
+<div class="col">
+  {% comment %} <label>Choose Year Details:</label> {% endcomment %}
+      <select class="form-select year_range mt-0" id="year_range" name="period">
+
+        <option value="" selected="selected">Year</option> 
+
+        {% if year_range == "2020" %}
+          <option value="2020" selected="selected">2020</option>
+        {% else %}  
+        <option value="2020">2020</option>
+        {% endif %}
+
+       
+
+        {% if year_range == "2021" %}
+          <option value="2021" selected="selected">2021</option>
+        {% else %}  
+        <option value="2021">2021</option>
+        {% endif %}
+
+        {% if year_range == "2022" %}
+          <option value="2022" selected="selected">2022</option>
+        {% else %}  
+        <option value="2022">2022</option>
+        {% endif %}
+
+        {% if year_range == "2023" %}
+          <option value="2023" selected="selected">2023</option>
+        {% else %}  
+        <option value="2023">2023</option>
+        {% endif %}
+
+        {% if year_range == "2024" %}
+          <option value="2024" selected="selected">2024</option>
+        {% else %}  
+        <option value="2024">2024</option>
+        {% endif %}
+
+        {% if year_range == "2025" %}
+          <option value="2025" selected="selected">2025</option>
+        {% else %}  
+        <option value="2025">2025</option>
+        {% endif %}
+
+        {% if year_range == "2026" %}
+          <option value="2026" selected="selected">2026</option>
+        {% else %}  
+        <option value="2026">2026</option>
+        {% endif %}
+
+      </select>
+  
+    </div>
+
+
+ 
+      <div class="col">
+      <select class="form-select branches mt-0" id="branches" name="branches">
+
+        <option value="" selected="selected">Branch</option> 
+
+        {% if unlimited %}
+
+        {% for branch in branchex %}
+          {% if branches == branch %}
+            <option value="{{ branch.name }}" id="{{ branch.id }}" selected="selected">{{ branch.name }}</option>
+          {% else %}  
+          <option value="{{ branch.name }}" id="{{ branch.id }}" >{{ branch.name }}</option>
+          {% endif %}
+        {% endfor %}
+
+        {% else %}
+        <option value="{{ branch }}" id="">{{ branch }}</option>
+        {% endif %}
+        
+      </select>
+    </div>
+
+
+    <div class="col">
+      <select class="form-select branches mt-0" id="member_category" name="member_category">
+
+        <option value="" selected="selected">Member Category</option> 
+
+        {% for category in categories %}
+          {% if member_category == category %}
+            <option value="{{ category.category }}" id="{{ category.id }}"  selected="selected">{{ category.category }}</option>
+          {% else %}  
+            <option value="{{ category.category }}" id="{{ category.id }}">{{ category.category }}</option>
+          {% endif %}
+        {% endfor %}
+
+      </select>
+    </div>
+
+
+
+    <div class="col">
+      <select class="form-select branches mt-0" id="group" name="group">
+
+        <option value="" selected="selected">Group</option> 
+
+        {% for grp in groups %}
+          {% if group == grp %}
+            <option value="{{ grp.group }}" id="{{ grp.id }}"  selected="selected">{{ grp.group }}</option>
+          {% else %}  
+            <option value="{{ grp.group }}" id="{{ grp.id }}">{{ grp.group }}</option>
+          {% endif %}
+        {% endfor %}
+      
+      </select>
+    </div>
+
+  
+    </div>
+
+    <br>
+
+    
+
+    <div class="row">
+
+      <div class="col">
+        <select class="form-select branches mt-0" id="subgroup" name="subgroup">
+  
+          <option value="" selected="selected">Subgroup</option> 
+  
+        {% for subgrp in subgroups %}
+          {% if subgroup == subgrp %}
+            <option value="{{ subgrp.subgroup }}" id="{{ subgrp.id }}"  selected="selected">{{ subgrp.subgroup }}</option>
+          {% else %}  
+            <option value="{{ subgrp.subgroup }}" id="{{ subgrp.id }}">{{ subgrp.subgroup }}</option>
+          {% endif %}
+        {% endfor %}
+
+        
+        </select>
+      </div>
+
+      {% comment %} {{ string_start }}  {% endcomment %}
+    
+        <div class="input-group col">
+            <label class="input-group-text">Start date</label>
+            {% if start_date is not None %}
+              {% if string_start == '2023-01-01' %}
+              <input class="form-control branches mt-0" type="date" id="start_date" name="start_date" />
+              {% else %}
+              <input class="form-control branches mt-0" type="date" value="{{ string_start }}" id="start_date" name="start_date" />
+              {% endif %}
+            {% else %}  
+            <input class="form-control branches mt-0" type="date" id="start_date" name="start_date" />
+            {% endif %}
+        </div>
+
+        <div class="input-group col">
+          <label class="input-group-text">End date</label>
+          {% if end_date is not None %}
+          <input class="form-control branches mt-0" type="date" value="{{ string_end }}" id="end_date" name="end_date" />
+          {% else %}  
+          <input class="form-control branches mt-0" type="date" id="end_date" name="end_date" />
+          {% endif %}
+      </div>
+      
+      
+    
+      
+           <div class="col">
+            <button class="btn btn-sm btn-block" id="filter" style="background-color: #f7941d">Filter</button>
+      
+           </div>
+      
+        
+        </div>
+
+<hr>
+
+
+    <div class="mt-4" style="display:flex; flex-direction:row;">
+      <p>Outstanding Service Fee: {{ base }} {{ outstanding }}0</p>
+      <a href="{% url 'superuser:ajax_load_bill' %}" class="ml-3 mb-2" id="pay"><button class="btn btn-success btn-sm">Pay Now</button></a>
+    </div>
+
+    {% csrf_token %}
+    
+    <input type="text" id="amount_paid" value="{{ outstanding }}" hidden />
+    <input type="text" id="base" value="{{ base }}" hidden />
+    <input type="text" id="client_id" value="{{ client_id }}" hidden />
+
+    
+<div id="root">
+    <div class="container pt-5">
+      <div class="row align-items-stretch">
+        <div class="c-dashboardInfo col-lg-3 col-md-6">
+          <div class="wrap d-flex flex-column">
+
+            <div class="">
+            <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">Projected Income</h4>
+            </div>
+            <div>
+            <span class="hind-font caption-12 c-dashboardInfo__count text-center" style="color: blue;">{{ base }} {{ string_invoice }}</span>
+            </div>
+
+          </div>
+        </div>
+
+
+        <div class="c-dashboardInfo col-lg-3 col-md-6">
+          <div class="wrap d-flex flex-column">
+            <div>
+              <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">Projected Expenses</h4>
+            </div>
+            <div>
+            <span class="hind-font caption-12 c-dashboardInfo__count" style="color: #006c40;">{{ base }} 2,000</span>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="c-dashboardInfo col-lg-3 col-md-6">
+          <div class="wrap d-flex flex-column">
+          <div>
+            <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">Online Collections</h4>
+          </div>
+          <div>
+            <span class="hind-font caption-12 c-dashboardInfo__count" style="color: #ff0000;">{{ base }} {{ string_online }}</span>
+          </div>
+          </div>
+        </div>
+
+        <div class="c-dashboardInfo col-lg-3 col-md-6">
+          <div class="wrap d-flex flex-column">
+            <div>
+            <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">Cash Collections</h4>
+            </div>
+            <div>
+            <span class="hind-font caption-12 c-dashboardInfo__count" style="color: blue;">{{ base }} {{ string_offline }}0</span>
+          </div>
+        </div>
+      </div>
+
+        
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+  <div id="root">
+    <div class="container pt-5">
+      <div class="row align-items-stretch">
+
+
+        <div class="c-dashboardInfo col-lg-3 col-md-6">
+          <div class="wrap d-flex flex-column">
+            <div>
+              <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">Total Collections</h4>
+            </div>
+            <div>
+            <span class="hind-font caption-12 c-dashboardInfo__count" style="color: #006c40;">{{ base }} {{ string_payments }}</span>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="c-dashboardInfo col-lg-3 col-md-6">
+          <div class="wrap d-flex flex-column">
+            <div>
+            <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">Percentage recieved</h4>
+            </div>
+            <div>
+            <span class="hind-font caption-12 c-dashboardInfo__count" style="color: blue;">{{ amount_received }}&#37;</span>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="c-dashboardInfo col-lg-3 col-md-6">
+        <div class="wrap d-flex flex-column">
+        <div>
+          <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">Total Arrears</h4>
+        </div>
+        <div>
+          <span class="hind-font caption-12 c-dashboardInfo__count" style="color: #ff0000;">{{ base }} {{ string_arrears }}</span>
+        </div>
+        </div>
+      </div>
+
+        <div class="c-dashboardInfo col-lg-3 col-md-6">
+          <div class="wrap d-flex flex-column">
+
+            <div class="">
+
+            <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">Total Expenses</h4>
+            </div>
+            <div>
+            <span class="hind-font caption-12 c-dashboardInfo__count text-center" style="color: blue;">{{ base }} 2,000</span>
+            </div>
+
+          </div>
+        </div>
+
+        
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+<div id="root" style="margin-top: -2%;">
+    <div class="container pt-5">
+      <div class="row align-items-stretch">
+
+
+        <div class="c-dashboardInfo col-lg-3 col-md-6">
+          <div class="wrap d-flex flex-column">
+            <a href="http://127.0.0.1:8000/client/view-payment-details/#view_assigned" class="a_tag">
+            <div>
+            <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">Full Payment Users</h4>
+            </div>
+            <div>
+            <span class="hind-font caption-12 c-dashboardInfo__count" style="color: #006c40;">{{ full_payments }}</span>
+            </div>
+          </a>
+          </div>
+        </div>
+
+        <div class="c-dashboardInfo col-lg-3 col-md-6">
+          <div class="wrap d-flex flex-column">
+
+            <a href="http://127.0.0.1:8000/client/view-payment-details/#view_assigned" class="a_tag">
+
+            <div>
+            <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">Part Payment Users</h4>
+            </div>
+            <div>
+            <span class="hind-font caption-12 c-dashboardInfo__count" style="color: #006c40;">{{ part_payments }}</span>
+            </div>
+          </a>
+          </div>
+        </div>
+
+
+      
+
+
+        <div class="c-dashboardInfo col-lg-3 col-md-6">
+          <div class="wrap d-flex flex-column">
+            <a href="http://127.0.0.1:8000/client/view-payments/#view_payments" class="a_tag">
+
+            <div>
+
+            <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">Active Users</h4>
+            </div>
+            <div>
+            <span class="hind-font caption-12 c-dashboardInfo__count" style="color: #006c40;">{{ active_users }}</span>
+            </div>
+          </a>
+
+          </div>
+        </div>
+
+
+
+        <div class="c-dashboardInfo col-lg-3 col-md-6">
+          <div class="wrap d-flex flex-column">
+            <a href="http://127.0.0.1:8000/client/view-payments/#view_payments" class="a_tag">
+            <div>
+            <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">Inactive Users</h4>
+            </div>
+            <div>
+            <span class="hind-font caption-12 c-dashboardInfo__count" style="color: #ff0000;">{{ expired_users }}</span>
+            </div>
+            </a>
+
+          </div>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<div id="root" style="margin-top: -2%;">
+  <div class="container pt-5">
+    <div class="row align-items-stretch">
+
+      <div class="c-dashboardInfo col-lg-3 col-md-6">
+        <div class="wrap d-flex flex-column">
+          <div>
+          <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">Service Charge({{service_charge}}&#37;)</h4>
+          </div>
+          <div>
+          <span class="hind-font caption-12 c-dashboardInfo__count" style="color: #006c40;">{{ base }} {{ outstanding }}0</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="c-dashboardInfo col-lg-3 col-md-6">
+      <div class="wrap d-flex flex-column">
+        <a href="http://127.0.0.1:8000/client/view-public-donations/#public_donations" class="a_tag">
+
+        <div>
+        <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">Collections After Service Charges</h4>
+        </div>
+        <div>
+        <span class="hind-font caption-12 c-dashboardInfo__count" style="color: #006c40;">{{ base }} 2,000</span>
+        </div>
+      </a>
+      </div>
+    </div>
+
+
+    <div class="c-dashboardInfo col-lg-3 col-md-6">
+      <div class="wrap d-flex flex-column">
+        <div>
+        <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">Expiry Invoices</h4>
+        </div>
+        <div>
+        <span class="hind-font caption-12 c-dashboardInfo__count" style="color: #006c40;">{{ base }} {{ string_expiry_invoices }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="c-dashboardInfo col-lg-3 col-md-6">
+    <div class="wrap d-flex flex-column">
+      <div>
+      <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">Non-Expiry Invoices</h4>
+      </div>
+      <div>
+      <span class="hind-font caption-12 c-dashboardInfo__count" style="color: #006c40;">{{ base }} {{ string_non_expiry_invoices }}</span>
+    </div>
+  </div>
+</div>
+
+
+    
+  </div>
+</div>
+</div>
+<br/>
+<br/>
+<h2 class="text-center text-danger">{{ year }} Report</h2>
+<br/>
+  <div class="chart">
+    <div id="container">
+      <canvas id="myChart"></canvas>
+    </div>
+    <div id="container2">
+      <canvas id="barChart"></canvas>
+    </div>
+  </div>
+  <br/>
+  <br/>
+  <br/>
+
+
+  <script>
+  const ctx = document.getElementById('myChart').getContext('2d');
+  const ctx2 = document.getElementById('barChart').getContext('2d');
+
+  const myChart = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+          labels:["Projected Income", "Projected Expenses", "Online Collections", "Cash Collections", "Total Collections", "Percentage recieved", "Total Arrears", "Total Expenses", "Full Payment Users", "Part Payment Users", "Active Users", "Inactive Users", "Service Charge", "Collections After Service Charges", "Expiry Invoices", "Non-Expiry Invoices"],
+          datasets: [{
+              label: 'System Statistics',
+              data: {{ data1|safe }},
+              backgroundColor: [
+                  'rgba(255, 99, 132, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(55, 206, 86, 1)',
+                  'rgba(75, 192, 190, 1)',
+                  'rgba(153, 12, 255, 1)',
+                  'rgba(255, 159, 64, 1)',
+                  'rgba(54, 16, 235, 1)',
+                  'rgba(25, 99, 132, 1)',
+                  'rgba(255, 159, 50, 1)',
+                  'rgba(250, 99, 132, 1)',
+                  'rgba(54, 162, 25, 1)',
+                  'rgba(255, 26, 86, 1)',
+                  'rgba(75, 192, 190, 1)',
+                  'rgba(255, 159, 64, 1)',
+                  'rgba(255, 99, 132, 1)',
+                  'rgba(75, 192, 192, 1)',
+
+              ],
+              borderColor: [
+                  'rgba(255, 99, 132, 0)',
+                  'rgba(54, 162, 235, 0)',
+                  'rgba(255, 206, 86, 0)',
+                  'rgba(75, 192, 192, 0)',
+                  'rgba(153, 102, 255, 0)',
+                  'rgba(255, 159, 64, 0)',
+                  'rgba(54, 162, 235, 0)',
+                  'rgba(255, 99, 132, 0)',
+                  'rgba(153, 102, 255, 0)',
+
+              ],
+              hoverOffset: 5,
+              borderWidth: 10
+          }]
+      },
+      options: {
+        responsive: true,
+
+          scales: {
+              y: {
+                  beginAtZero: true
+              }
+          }
+      }
+  });
+
+
+  {% comment %} const labels = Utils.months({count: 12}); {% endcomment %}
+  const barChart = new Chart(ctx2, {
+      type: 'bar',
+      data: {
+          labels:["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+          datasets: [{
+              label: 'Monthly Receivables',
+              data: {{ data2|safe }},
+              backgroundColor: [
+                  'rgba(255, 99, 132, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)',
+                  'rgba(153, 102, 255, 1)',
+                  'rgba(255, 159, 64, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 99, 132, 1)',
+              ],
+              borderColor: [
+                  'rgba(255, 99, 132, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)',
+                  'rgba(153, 102, 255, 1)',
+                  'rgba(255, 159, 64, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 99, 132, 1)',
+              ],
+              borderWidth: 1
+          }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+
+          scales: {
+              y: {
+                 
+                  min: 0,
+                  max: 100000,
+                  ticks: {
+                    // forces step size to be 50 units
+                    stepSize: 500
+                  }
+              }
+          }
+      }
+  });
+</script>
+
+
+{% endblock %}

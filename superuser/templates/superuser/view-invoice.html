@@ -1,0 +1,152 @@
+{% extends 'superuser/base.html' %}
+{%load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% block content %}
+
+
+{% if unlimited %} 
+<input class="mt-4 " type="checkbox" name="" id="check_all" onClick="toggle(this)" style="margin-left: 1.5%"><label style="margin-left: 1%">Check all</label> 
+
+
+<div class="types">
+    <a href="{% url 'superuser:createInvoice' %}"><button class="btn btn-sm" style="background-color: #f7941d"><p>Add Invoice</p></button></a>
+    <button id="delete_invoice" data-pop-url="{% url 'superuser:ajax_delete_invoice' %}" class="btn btn-danger btn-sm">Delete selected</button>
+</div>
+{% endif %}
+
+  <br/>
+        <br/>
+        <br/>
+        <hr>        
+
+        <form method="get" class="mt-4">
+            {% csrf_token %}
+            <div class="well">
+
+              <div class="row ">
+                
+            <div class="col">
+                <div class="form-group">
+                    {% render_field my_filter.form.branch class="form-control" placeholder="Filter by Branch..."%}
+                  </div>
+            </div>
+            <div class="col">      
+
+                <div class="form-group">
+                  {% render_field my_filter.form.member_category class="form-control"  placeholder="Filter by Member category..."%}
+                </div>
+            </div>
+
+
+
+            <div class="col">
+                <div class="input-group">
+                    {% render_field my_filter.form.group class="form-control"  placeholder="Filter by Group..."%}
+                  </div>
+            </div>
+
+            </div>
+
+
+            
+            <div class="row ">
+    
+                <div class="col"> 
+                    <div class="form-group">
+                      {% render_field my_filter.form.subgroup class="form-control" placeholder="Filter by Subgroup..." %}
+                    </div>
+                </div>
+    
+                <div class="col"> 
+                    <div class="form-group">
+                      {% render_field my_filter.form.invoice_type class="form-control" placeholder="Filter by Invoice Type..." %}
+                    </div>
+                </div>
+    
+                <div class="col">
+                    <button type="submit" class="btn btn-sm btn-block" style="float: center;background-color: #f7941d">
+                        <span class="glyphicon glyphicon-search"></span> Filter
+                      </button>
+                    </div>
+    
+                </div>
+ 
+          </div>
+          </form>
+        <hr>        
+        <br/>
+
+
+
+<div class="table-responsive-md">
+
+<table class="table table-striped table-hover" id="invoices">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Branch</th>
+            <th>Category</th>
+            <th>Group</th>
+            <th>Subgroup</th>
+            <th>Invoice Type</th>
+            <th>Fee Type</th>
+            <th>Total Amount</th>
+            <th></th>
+            {% if unlimited %} 
+            <th></th>
+            {% endif %}
+
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+      {% csrf_token %}
+
+        {% for invoice in invoices %}
+
+        <tr id="{{ invoice.id }}">
+
+            <td><input type="checkbox" name="foo[]" id="delete_invoice{{forloop.counter}}" value="{{ invoice.id }}"></td>
+
+            <td>{{invoice.branch}}</td>
+            <td>{{invoice.member_category}}</td>
+            <td>{{invoice.group}}</td>
+            <td>{{invoice.subgroup}}</td>
+
+            {% if invoice.invoice_type == 'expiry' %}
+            <td>Expiry Invoice</td>
+            {% else %}
+            <td>Non Expiry Invoice</td>
+            {% endif %}
+
+
+            <td>{{invoice.fee_type}}</td>
+            <td>{{ base }} {{invoice.total_amount }}</td>
+        
+           
+
+           
+            <td><a href="{% url 'superuser:viewInvoices' pk=invoice.pk %}"><button class="btn btn-primary btn-sm" type="button">View</button></a></td>
+
+            {% if unlimited %} 
+            <td><a href="{% url 'superuser:editInvoice' id=invoice.id %}"><button class="btn btn-warning btn-sm" type="button">Edit</button></a></td>
+            {% endif %}
+            
+            <td><a href="{% url 'superuser:assignPaymentsDuration' pk=invoice.pk %}"><button class="btn btn-sm" type="button" style="background-color: #006c40; color: #fff">Assign Member(s)</button></a></td>
+
+
+        </tr>
+
+        {% endfor %}
+    </tbody>
+</table>
+
+</div>  
+ 
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'superuser/base.html' %}
+ 
+{% block content %}
+
+{% if unlimited %} 
+<a href="{% url 'superuser:createFeeItems' %}"><button class="btn btn-sm fee-type" style="background-color: #f7941d"><p>Add Fee Item</p></button></a>
+{% endif %}
+
+<br>
+<br>
+<br>
+<div class="table-responsive-md">
+
+<table class="table table-striped table-hover" id="fee_itemx">
+    <thead>
+        <tr>
+            <th>Fee Type</th>
+            <th>Fee Items</th>
+
+            {% if unlimited %} 
+            <th></th> 
+            <th></th> 
+            {% endif %}
+
+        </tr>
+    </thead>
+    <tbody>
+      {% csrf_token %}
+
+        {% for fee_item in fee_items %}
+        <tr id="{{ fee_item.id }}">
+
+            <td>{{fee_item.fee_type}}</td>
+            <td>{{fee_item.fee_items}}</td>
+
+            {% if unlimited %} 
+            <td><a href="{% url 'superuser:editFeeItem' id=fee_item.id %}"><button type="button" class="btn btn-primary btn-sm">Edit</button></a></td>
+            <td><a href="{% url 'superuser:deleteFeeItem' id=fee_item.id %}" class="item-delete" id="{{fee_item.id }}"><button class="btn btn-danger btn-sm">Delete</button></a></td>
+            {% endif %}
+
+        </tr>
+      
+        {% endfor %} 
+    </tbody>
+</table>
+
+</div>
+{% endblock %}

@@ -1,0 +1,391 @@
+{% extends 'superuser/base.html' %}
+{%load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% load static %}
+
+  {% block style %}
+  p {
+    font-size: 16px;
+    line-height: 26px;
+    letter-spacing: 0.5px;
+    color: #484848;
+}
+ 
+/* Popup Open button */ 
+.open-button{
+    color:#FFF;
+    background:#0066CC;
+    padding:10px;
+    text-decoration:none;
+    border:1px solid #0157ad;
+    border-radius:3px;
+}
+ 
+.open-button:hover{
+    background:#01478e;
+}
+ 
+.popup {
+    position:fixed;
+    z-index:10;
+    top:0px;
+    left:0px;
+    background:rgba(0,0,0,0.75);
+    width:100%;
+    height:100%;
+    display:none;
+}
+ 
+/* Popup inner div */
+.popup-content {
+    width: 700px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    padding: 40px;
+    margin-top: 100px;
+    box-shadow: 0px 2px 6px rgba(0,0,0,1);
+    border-radius: 3px;
+    background: #fff;
+    position: relative;
+}
+ 
+/* Popup close button */
+.close-button {
+    width: 25px;
+    height: 25px;
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    border-radius: 20px;
+    background: rgba(0,0,0,0.8);
+    font-size: 20px;
+    text-align: center;
+    color: #fff;
+    text-decoration:none;
+}
+ 
+.close-button:hover {
+    background: rgba(0,0,0,1);
+}
+ 
+@media screen and (max-width: 720px) {
+.popup-content {
+    width:90%;
+    } 
+}
+  {% endblock %}
+
+
+{% block content %}
+
+
+
+        {% comment %} <form method="get" class="mt-3">
+            {% csrf_token %}
+            <div class="well">
+
+              <div class="row ">
+                
+                <div class="col-auto">
+                    <div class="form-group">
+                        {% render_field my_filter.form.member class="form-control" placeholder="Member contains..."%}
+                      </div>
+
+                    <div class="input-group mb-3">
+                        <label class="input-group-text" for="inputGroupSelect01">Fee Type</label>
+                        {% render_field my_filter.form.fee_type class="form-select" %}
+                      </div> 
+                </div>
+
+
+            <div class="col-auto">
+                <div class="form-group">
+                    {% render_field my_filter.form.branch class="form-control" placeholder="Branch contains..."%}
+                  </div>
+
+                <div class="form-group">
+                  {% render_field my_filter.form.member_category class="form-control"  placeholder="Member category contains..."%}
+                </div>
+            </div>
+
+
+            <div class="col-auto">
+                <div class="form-group">
+                    {% render_field my_filter.form.group class="form-control"  placeholder="Group contains..."%}
+                  </div>
+                <div class="form-group">
+                  {% render_field my_filter.form.subgroup class="form-control" placeholder="Subgroup contains..." %}
+                </div>
+            </div>
+
+
+            <div class="col-auto">
+                <div class="form-group">
+                    {% render_field my_filter.form.start_date class="form-control"  placeholder="Start date contains..."%}
+                  </div>
+                <div class="form-group">
+                  {% render_field my_filter.form.start_date class="form-control" placeholder="End date contains..." %}
+                </div>
+            </div>
+
+
+            <div class="col-auto">
+            <button type="submit" class="btn btn-sm" style="float: right;background-color: #f7941d">
+                <span class="glyphicon glyphicon-search"></span> Search
+              </button>
+            </div>
+
+            
+            </div>
+          </div>
+          </form> {% endcomment %}
+
+             
+            <div class="popup" popup-name="popup-1">
+                <div class="popup-content">
+                  <h2>Fee Items Breakdown</h2>
+                  <p id="desc"></p>
+                  <a class="close-button" popup-close="popup-1" href="javascript:void(0)">x</a>
+                </div>
+            </div> 
+
+
+        <hr>
+
+        {% if unlimited %}
+        <input type="checkbox" name="" id="check_all" onClick="toggle(this)" style="margin-left: 1.5%; margin-top: 1%; margin-bottom: -2%;"><label style="margin-left: 1%">Check all</label> 
+
+
+
+        <div class="types" style="margin-top: -1%; margin-bottom: 2%;">
+            <button id="delete_assigned" class="btn btn-danger btn-sm mb-2" data-remove-url="{% url 'superuser:ajax_delete_assigned' %}">Delete selected</button>
+        </div>
+       {% endif %}
+      
+
+        <br/>
+        <hr>        
+
+        <form method="get" class="mt-4">
+            {% csrf_token %}
+            <div class="well">
+
+              <div class="row ">
+                
+            <div class="col">
+                <div class="form-group">
+                    {% render_field my_filter.form.branch class="form-control" placeholder="Filter by Branch..."%}
+                  </div>
+            </div>
+            <div class="col">      
+
+                <div class="form-group">
+                  {% render_field my_filter.form.member_category class="form-control"  placeholder="Filter by Member category..."%}
+                </div>
+            </div>
+
+
+
+            <div class="col">
+                <div class="input-group">
+                    {% render_field my_filter.form.group class="form-control"  placeholder="Filter by Group..."%}
+                  </div>
+            </div>
+
+            <div class="col"> 
+              <div class="form-group">
+                {% render_field my_filter.form.subgroup class="form-control" placeholder="Filter by Subgroup..." %}
+              </div>
+          </div>
+
+            </div>
+
+
+            <div class="row ">
+    
+                
+    
+                <div class="col"> 
+                  <div class="input-group mb-3">
+                    <label class="input-group-text">Fee Type</label>
+                    {% render_field my_filter.form.fee_type class="form-select" %}
+                  </div> 
+                </div>
+
+                <div class="col"> 
+                  <div class="input-group">
+                    <label class="input-group-text">Start date</label>
+                    {% render_field my_filter.form.start_date type="date" class="form-control"  placeholder="Filter by Start date..."%}
+                  </div>
+              </div>
+
+              <div class="col"> 
+                <div class="input-group">
+                  <label class="input-group-text">End date</label>
+                  {% render_field my_filter.form.end_date type="date" class="form-control" placeholder="Filter by End date..." %}
+                </div>
+            </div>
+    
+                <div class="col">
+                    <button type="submit" class="btn btn-sm btn-block" style="float: center;background-color: #f7941d">
+                        <span class="glyphicon glyphicon-search"></span> Filter
+                      </button>
+                    </div>
+    
+                </div>
+ 
+          </div>
+          </form>
+        <hr>        
+        <br/>
+     
+<div class="table-responsive-md" onscroll="myFunction()" id="view_assigned">
+
+<table class="table table-striped table-hover" id="assigned_payments">
+  {% csrf_token %}
+
+    <thead>
+        <tr>
+            <th></th>
+            <th>Member</th>
+            <th>Fee Type</th>
+            <th>Invoice Type</th>
+            <th>Amount Assigned</th>
+            <th>Amount Left</th>
+            <th>Last Updated</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+         {% for detail in assigned_payments %}
+
+        <tr id="{{ detail.id }}">
+
+            <td><input type="checkbox" name="foo[]" id="delete_assigned" value="{{ detail.id }}"></td>
+            <td>{{detail.member}}</td>
+
+            {% if not detail.fee_type %}
+            <td>Donation</td>
+            {% else %}
+            <td>{{detail.fee_type}}</td>
+            {% endif %}
+
+            {% if detail.invoice_type == 'expiry' %}
+            <td>Expiry Invoice</td>
+            {% else %}
+            <td>Non Expiry Invoice</td>
+            {% endif %}
+
+            {% if not detail.total_invoice %}
+            <td>None</td>
+            {% else %}
+            <td>{{ base }} {{detail.total_invoice}}<br><a popup-open="popup-1" href="javascript:void(0)" style="font-size:12px;" data-url="{% url 'superuser:ajax_load_breakdown' %}" data-id="{{ detail.id }}"><i>Breakdown</i></a></td>
+            {% endif %}
+
+
+            {% comment %} {% if not detail.expiration_bill %}
+
+            <td>None</td>
+           {% else %} {% endcomment %}
+
+           <td id="table_data">
+            {% if detail.expiration_bill == None %} 
+                {% if detail.total_invoice == None %}
+                    None
+                {% else %}
+                   {{ base }} {{detail.total_invoice}}
+                {% endif %}
+            {% else %}
+                {{ base }} {{detail.expiration_bill}}
+            {% endif %}
+            </td>
+            {% comment %} {{detail.total_invoice}} {% endcomment %}
+            {% comment %} {{detail.expiration_bill}} {% endcomment %}
+
+
+            <td>{{detail.date_created}}</td>
+
+            <td><a href="{% url 'superuser:viewAssigned' pk=detail.pk %}"><button type="button" class="btn btn-primary btn-sm">View</button></a></td>
+
+            {% if not detail.fee_type %}
+            <td><a href="{% url 'superuser:payDonation' detail.pk %}"><button type="button" class="btn btn-success btn-sm">Pay Now</button></a></td>
+            {% else %}
+             {% if detail.expiration_bill == 0 %}
+            <td><a href="javascript:void(0)"><button type="button" class="btn btn-success btn-sm" disabled>Pay Now</button></a></td>
+             {% else %}
+            <td><a href="{% url 'superuser:makePayments' pk=detail.pk %}"><button type="button" class="btn btn-success btn-sm">Pay Now</button></a></td>
+             {% endif %}
+            {% endif %}
+
+        </tr>
+
+       {% endfor %} 
+    </tbody>
+</table>
+
+</div>
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+
+{% comment %} {% if assigned_payments.has_previous %}  
+<a href="?page=1"> First </a>
+<a href="?page={{ assigned_payments.previous_page_number}}"> Previous </a>
+
+{% endif %}  
+
+Page {{ assigned_payments.number }} of {{ assigned_payments.paginator.num_pages }}
+
+{% if assigned_payments.has_next %}  
+<a href="?page={{assigned_payments.next_page_number}}"> Next </a>
+<a href="?page={{ assigned_payments.paginator.num_pages}}"> Last </a>
+
+{% endif %}  
+
+     {% endcomment %}
+
+{% comment %} <div class="pages">
+  <div class="mt-3 title">
+  Page {{ assigned_payments.number }} of {{ assigned_payments.paginator.num_pages }}
+  </div>
+  
+
+
+  <div style="float:right;" class="num">
+  {% if assigned_payments.has_other_pages %}
+  <nav aria-label="Page navigation example">
+  <ul class="pagination">
+      {% if assigned_payments.has_previous %}
+      <li class="page-item" id="{{ assigned_payments.previous_page_number }}"><span class="page-link">&laquo;</span></li>
+      {% else %}
+      <li class="page-item" class="disabled"><span class="page-link">&laquo;</span></li>
+      {% endif %}
+  
+      {% for i in assigned_payments.paginator.page_range %}
+          {% if assigned_payments.number == i %}
+          <li class="page-item" class="active"><span class="page-link">{{ i }}</span></li>
+          {% else %}
+          <li class="page-item" id="{{ i }}"><span class="page-link">{{ i }}</span></li>
+          {% endif %}
+      {% endfor %}
+  
+  
+      {% if assigned_payments.has_next %}
+      <li class="page-item" id="{{ assigned_payments.next_page_number }}"><span class="page-link">&raquo;</span></li>
+      {% else %}
+      <li class="page-item" class="disabled"><span class="page-link">&raquo;</span></li>
+      {% endif %}
+  </ul>
+  </nav>
+  {% endif %}
+  </div>
+  
+  <br/>
+  </div> {% endcomment %}
+{% endblock %}

@@ -1,0 +1,234 @@
+{% extends 'superuser/base.html' %}
+ 
+{% block content %}
+
+{% comment %} 
+<form action="" method="post" id="makePaymentForm" name="" data-fee-url="{% url 'superuser:ajax_load_fee' %}"  data-balance-url="{% url 'superuser:ajax_load_balance' %}" novalidate>
+    {% csrf_token %}
+    {% comment %} <input type='text' name='branch' value="" id="branch" >
+    <select id="user_member" name="member" required class="data">
+      <option selected>Member</option>
+      {% for member in members %}
+      <option value="{{ member.member }}" id="member{{forloop.counter}}">{{ member.member }}</option>
+      {% empty %}
+      <option value="Gideon K. Impraim" id="member1">Gideon K. Impraim</option>
+      <option value="Samuel Ofosu" id="member2">Samuel Ofosu</option>
+      {% endfor %}
+  </select>
+  <br>
+  
+    <select id="branch" name="branch" required >
+        <option selected>Branch</option>
+        {% for branch in branches %}
+        <option value="{{ branch.name }}" id="{{ branch.id }}">{{ branch.name }}</option>
+        {% endfor %}
+      </select>
+<br>
+    <select id="member_category" name="member_category" required class="data">
+      <option selected>Member Category</option>
+      {% for member_category in member_categories %}
+      <option value="{{ member_category.category }}" id="{{ member_category.id }}">{{ member_category.category }}</option>
+      {% endfor %}
+    </select>
+
+    <br>
+
+    <select id="group" name="group" required class="data">
+        <option selected>Group</option>
+        {% for group in groups %}
+        <option value="{{ group.group }}" id="{{ group.id }}">{{ group.group }}</option>
+        {% endfor %}
+    </select>
+
+    <br>
+    <select id="subgroup" name="subgroup" required class="data">
+        <option selected>Subgroup</option>
+        {% for subgroup in subgroups %}
+        <option value="{{ subgroup.subgroup }}" id="{{ subgroup.id }}">{{ subgroup.subgroup }}</option>
+        {% endfor %}
+    </select>
+    <br>
+
+
+
+
+    <select id="fee_type" name="fee_type" required class="data">
+    <option selected>Fee Type</option>
+    </select>
+    <br>
+
+    <select id="fee_description" name="fee_description" required class="data">
+        <option selected>Fee Description</option>
+        {% for fee_description in fee_description %}
+          <option value="{{ fee_description.id }}" id="{{ fee_description.id }}">{{ fee_description.fee_description }}</option>
+        {% endfor %}
+        </select>
+    <br>
+
+    
+    <label>Payers Details</label><br>
+    <input type="text" id="payers_first_name" name="payers_first_name" placeholder="First name..."><br>
+    <input type="text" id="payers_last_name" name="payers_last_name" placeholder="Last name..."><br>
+
+    <label></label>
+    <input type="tel" id="contact" name="contact" placeholder="Contact"><br>
+    <input type="email" id="email" name="email_address" placeholder="Email"><br>
+    <textarea id="remarks" name="remarks" placeholder="Remarks..." ></textarea><br>
+
+
+    <div id='user_type'></div>
+
+    <button>Pay Online</button>
+    <button>Pay Offline</button>
+    <button>Pay Service Provider</button>
+
+    <p>Send SMS</p>
+
+</form> 
+ {% endcomment %}
+
+
+
+
+
+
+
+
+       
+<div class="form-body">
+  <div class="row">
+      <div class="form-holder">
+          <div class="form-content">
+              <div class="form-items">
+                <h2 class="text-center mb-3" >Make Payment</h2>
+
+                  <form action="" method="post" id="makePaymentForm" name="" data-fee-url="{% url 'superuser:ajax_load_fee' %}"  data-balance-url="{% url 'superuser:ajax_load_balance' %}" >
+
+                      {% csrf_token %}
+                      <label class="mt-3">Payers Details</label><br>
+              
+                      <div class=" mt-3">
+                      <input class="form-control" type="text" id="payers_first_name" name="payers_first_name"  placeholder="First name..." required >
+                      </div>
+      
+                      <div class=" mt-3">
+                        <input class="form-control" type="text" id="payers_last_name" name="payers_last_name"  placeholder="Last name..." required >
+                      </div>
+      
+                      <div class=" mt-3">
+                          <input class="form-control" type="tel" id="contact" name="contact"  placeholder="Contact..." required >
+                      </div>
+      
+                      <div class=" mt-3">
+                        <input class="form-control" type="email" id="email" name="email_address"  placeholder="Email..." required >
+                      </div>
+
+
+
+                      
+                    <div class="">
+                        <select class="form-select mt-3" name="member" id="user_member" required>
+                          <option selected value="">Member</option>
+                          {% for member in members %}
+                          <option value="{{ member.member }}" id="{{ member.id }}" >{{ member.member }}</option>
+                          {% empty %}
+                          <option value="Gideon K. Impraim" id="member">Gideon K. Impraim</option>
+                          <option value="Samuel Ofosu" id="member">Samuel Ofosu</option>
+                          {% endfor %}
+                       </select>
+                   </div>
+
+
+
+                   <div class="">
+                    <select class="form-select mt-3" name="branch" id="branch" required>
+                          <option selected value="">Branch</option>
+                          {% for branch in branches %}
+                          <option value="{{ branch.name }}" id="{{ branch.id }}" >{{ branch.name }}</option>
+                          {% endfor %}
+                   </select>
+               </div>
+
+                   
+                   <div class="">
+                    <select class="form-select mt-3" name="member_category" id="member_category" required>
+                          <option selected value="">Member Category</option>
+                          {% for member_category in member_categories %}
+                    <option value="{{ member_category.category }}" id="{{ member_category.id }}" >{{ member_category.category }}</option>
+                    {% endfor %}
+                   </select>
+               </div>
+
+
+               <div class="">    
+                <select class="form-select mt-3" name="group" id="group" required>
+                      <option selected value="">Group</option>
+                      {% for group in groups %}
+                      <option value="{{ group.group }}" id="{{ group.id }}" >{{ group.group }}</option>
+                      {% endfor %}
+               </select>
+               </div>
+
+
+               <div class="">    
+                <select class="form-select mt-3" name="subgroup" id="subgroup" required>
+                      <option selected value="">Subgroup</option>
+                      {% for subgroup in subgroups %}
+                      <option value="{{ subgroup.subgroup }}" id="{{ subgroup.id }}" >{{ subgroup.subgroup }}</option>
+                      {% endfor %}
+               </select>
+               </div>
+
+
+
+               <div class="">    
+               <select class="form-select mt-3" id="fee_type" name="fee_type" required>
+                <option selected>Fee Type</option>
+                </select>
+               </div>
+
+
+
+               <div class="">    
+                <select class="form-select mt-3" name="fee_description" id="fee_description" required>
+                      <option selected value="">Fee Description</option>
+                      {% for fee_description in fee_description %}
+                  <option value="{{ fee_description.id }}" id="{{ fee_description.id }}" >{{ fee_description.fee_description }}</option>
+                {% endfor %}
+               </select>
+               </div>
+
+               <div id='user_type'></div>
+
+
+                <div class=" mt-3">
+                <textarea class="form-control" id="remarks" name="remarks" placeholder="Remarks..." required></textarea>
+                </div>
+
+                
+                <div class="d-flex flex-row">
+                  <div class="mt-3 mr-3">
+                   <button id="submit" type="submit" class="btn btn-primary btn-sm">Pay Offline</button>
+                   </div>
+                   <div class="mt-3">
+                     <button class="btn btn-primary btn-sm">Pay Online</button>
+                 </div>
+                 <div class="mt-3">
+                   <button class="btn btn-primary btn-sm">Pay Service Provider</button>
+               </div>
+             </div> 
+                
+
+                <a onclick="window.history.go(-1); return false;"><button type="button" class="btn btn-primary btn-sm mt-3">Back</button></a>
+
+                
+                     
+                  </form>
+              </div>
+          </div>
+      </div>
+  </div>
+</div> 
+
+
+{% endblock%}

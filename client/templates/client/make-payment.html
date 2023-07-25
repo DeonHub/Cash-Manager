@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <meta charset="utf-8" >
+      <meta name="viewport" content="width=device-width">
+
+      <link rel="icon" href="images/favicon.ico" type="image/ico" >
+
+      <title>Fees Management System </title>
+
+        {% load static %}
+        <script src="{% static 'client/js/script.js' %}"></script>
+        <script src="{% static 'superuser/js/script.js' %}"></script>
+        <script src="{% static 'client/js/side.js' %}"></script>
+        <link rel="icon" href="{% static 'superuser/media/favicon.jpg' %}" type="image/jpg" />
+
+        <link rel="stylesheet" href="{% static 'client/css/style.css' %}" media="all">
+        <link rel="stylesheet" href="{% static 'client/css/side.css' %}" media="all">
+        <link rel="stylesheet" href="{% static 'client/css/styles.css' %}" media="all">
+       {% comment %} <link rel="stylesheet" href="{% static 'superuser/css/style.css' %}" media="all">
+        <link rel="stylesheet" href="{% static 'superuser/css/side.css' %}" media="all">
+        <link rel="stylesheet" href="{% static 'superuser/css/styles.css' %}" media="all">  {% endcomment %}
+
+        <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
+
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css " />
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> 
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+        <style>
+          {% block style %}
+          
+          {% endblock %}
+        </style>
+    </head>
+
+    <body>
+
+      <div class="d-flex" id="wrapper">
+        
+        {% comment %} <!-- Sidebar--> {% endcomment %}
+        <div class="border-end" id="sidebar-wrapper">
+            {% comment %} <div class="sidebar-heading border-bottom text-center"><a  href="{% url 'client:index' %}">Fee Management System</a></div> {% endcomment %}
+            <div class="sidebar-heading border-bottom text-center"><a href="{% url 'client:index' mid=mid %}">
+              <img src="{% static 'superuser/media/aks.jpg' %}" alt="logo" /></a></div>
+              <div class="text-center mt-3 mb-3">
+                {{ date }}<br/>
+                {{ time }}
+              </div>
+          
+            <hr/>
+
+            <div class="list-group list-group-flush">
+                <a class="list-group-item list-group-item-action" href="{% url 'client:index' mid=mid %}"><span class="material-symbols-outlined">speed</span><p>Dashboard</p></a>
+                <a class="list-group-item list-group-item-action" href="{% url 'client:viewAssignedPayments' mid=mid %}"><span class="material-symbols-outlined">view_kanban</span><p>Assigned Payments</p></a>
+                <a class="list-group-item list-group-item-action" href="{% url 'client:viewPayments' mid=mid %}"><span class="material-symbols-outlined">list_alt</span><p>Payment Records</p></a>
+
+            </div>
+        </div>
+
+
+        {% comment %} <!-- Page content wrapper--> {% endcomment %}
+        <div id="page-content-wrapper">
+
+            {% comment %} <!-- Top navigation--> {% endcomment %}
+            <nav class="navbar navbar-expand-lg navbar-light bg-dark border-bottom">
+              <div class="container-fluid">
+                  <button class="btn btn-sm" id="sidebarToggle" style="background-color: #f7941d"><span class="material-symbols-outlined">menu</span></button>
+                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+
+                  <div class="d-flex flex-column ml-3 mt-3 mb-1 text-light demo" id="demo" style="text-align: center;width:100%;">
+                    <h4>{{ member_account_name }}</h4>
+                    <h6>Branch: {{ member_branch }}</h6>
+                  </div>
+                  
+                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                      <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
+                        
+
+                          <li class="nav-item dropdown">
+
+                            <div class="dropdown" >
+                              <button class="btn btn-light btn-sm dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" >
+                                <span class="material-symbols-outlined">account_circle</span>
+                              </button>
+                              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li><a class="dropdown-item" href="{% url 'client:viewProfile' mid=mid %}">Profile</a></li>
+                                <div class="dropdown-divider"></div> 
+
+                                <li><a class="dropdown-item" href="{% url 'client:logout' mid=mid %}" onclick="memberOut()">Log Out</a></li>
+                              </ul>
+                            </div>
+
+                          </li>
+                      </ul>
+                  </div>
+              </div>
+          </nav>
+
+
+            {% comment %} <!-- Page content--> {% endcomment %}
+            <div class="container-fluid">
+
+
+<div class="form-body">
+    <div class="row">
+        <div class="form-holder">
+            <div class="form-content">
+                <div class="form-items">
+                    <h2 class="text-center mb-3" >Make Payment</h2>
+
+                    <img src="{{ company.logo.url }}" width="250px" height="250px" style="margin-left: 20%;">
+  
+                    <form action="" method="post" id="paymentForm" name="" data-amount-url="{% url 'superuser:ajax_load_amount_due' %}" data-id="{{ assigned.id }}" data-credit-url="{% url 'superuser:ajax_load_credit' %}">
+  
+                        {% csrf_token %}
+
+                        <div class="input-group">
+                            {% comment %} <label class="input-group-text" for="start_date">Member</label> {% endcomment %}
+                            <input class="form-control" type="text" id="member" name="member"  value="{{ assigned.member }}" readonly hidden>
+                        </div>
+
+                        <div class="input-group">
+                            <input class="form-control" type="text" id="member_id" name="member_id"  value="{{ assigned.member_id }}" hidden >
+                        </div>
+
+
+                        <div class="input-group">
+                            {% comment %} <label class="input-group-text" for="start_date">Branch</label> {% endcomment %}
+                            <input class="form-control" type="text" id="branch" name="branch"  value="{{ assigned.branch }}" readonly hidden>
+                        </div>
+
+                        <div class="input-group">
+                            {% comment %} <label class="input-group-text" for="start_date">Member Category</label> {% endcomment %}
+                            <input class="form-control" type="text" id="member_category" name="member_category"  value="{{ assigned.member_category }}" readonly hidden>
+                        </div>
+
+                        <div class="input-group">
+                            {% comment %} <label class="input-group-text" for="start_date">Group</label> {% endcomment %}
+                            <input class="form-control" type="text" id="group" name="group"  value="{{ assigned.group }}" readonly hidden>
+                        </div>
+
+                        <div class="input-group">
+                            {% comment %} <label class="input-group-text" for="start_date">Subgroup</label> {% endcomment %}
+                            <input class="form-control" type="text" id="subgroup" name="subgroup"  value="{{ assigned.subgroup }}" readonly hidden>
+                        </div>
+
+                        <div class="input-group">
+                          <input class="form-control" type="text" id="invoice_type" name="invoice_type" value="{{ assigned.invoice_type }}" hidden>
+                        </div>
+
+                        
+
+
+
+                          <br/>
+                       <label class="text-center">Payment Details</label>
+                       <div class="input-group mt-3">
+                        <span class="input-group-text" id="basic-addon3">Invoice Type</span>
+                        {% if assigned.invoice_type == "expiry" %}
+                        <input class="form-control" type="text"  value="Expiry Invoice" readonly>
+                        {% else %}
+                        <input class="form-control" type="text" value="Non Expiry Invoice" readonly>
+                        {% endif %}
+                    </div>
+                        <div class="input-group">
+                            {% comment %} <label class="input-group-text" for="fee_type">Fee Type</label> {% endcomment %}
+                            <select class="form-select" id="fee_type" name="fee_type" hidden>
+                                <option value="{{ assigned.fee_type.id }}" id="{{ fee_type.id }}">{{ assigned.fee_type }}</option>
+                            </select>
+                        </div>
+
+
+                 <div class="input-group">
+                    {% comment %} <label class="input-group-text" for="fee_description">Fee Description</label> {% endcomment %}
+                    <select class="form-select"  id="fee_description" name="fee_description" hidden>
+                        <option value="{{ assigned.fee_description.id }}" id="{{ fee_description.id }}">{{ assigned.fee_description }}</option>
+                    </select>
+                </div>
+
+
+
+                    <div class="input-group mt-3">
+                        <span class="input-group-text" id="basic-addon3">Total Outstanding bill</span>
+                        <input class="form-control" type="text" id="outstanding_bill" name="outstanding_bill" value="{{ assigned.total_invoice }}" readonly>
+                      </div>
+                      <div class="input-group mt-3">
+                        <span class="input-group-text" id="basic-addon3">Assigned Duration</span>
+                        <input class="form-control" type="text" id="assigned_duration" name="assigned_duration" value="{{assigned.install_period}} {{assigned.install_range}}" readonly >
+                      </div>
+
+  
+                    <div class="">
+                        <select class="form-select mt-3" id="payment_status" name="payment_status" onchange="loadDuration(this)" required >
+                            <option selected value="">Payment Status</option>
+                            <option value="part" id="part">Part Payment</option>
+                            <option value="full" id="full">Full Payment</option>
+                        </select>
+                    </div>
+
+
+                    <br/>
+                    {% if assigned.invoice_type == "expiry" %}
+                    <div  style="display:none;" id="label">
+                    <label class="mt-3 mb-1">Select Renewal Duration</label>
+
+                   
+                    <div class="form-check" >
+                        {% for period in period %}
+                            {% if period.name != 'None' %}
+                                <input type="radio" class="form-check-input range mt-3" name="install_range" value="{{ period.name }}" id="range{{ forloop.counter }}" onchange="radioCheck2(this)" >
+                                <label class="form-check-label mt-3" for="install_range">{{ period.name }}</label><br/>
+                            {% endif %}
+                      {% endfor %}
+                    </div>
+                </div>
+                   {% endif %}
+      
+
+                   <div class=" mt-3" style="display:none;" id="input">
+                    <input class="form-control" type="text" id="numver" name="install_period" placeholder="Enter period"  disabled >
+                    </div>
+
+
+                    {% if assigned.invoice_type == "expiry" %}
+
+                      <div class="input-group mt-3">
+                        <span class="input-group-text" id="basic-addon3">Outstanding Renewal Bill</span>
+                        {% if  assigned.expiration_bill %}
+                            {% if assigned.expiration_bill < 0 %}
+                            <input class="form-control" type="text" id="expiration_bill" name="expiration_bill"  value="0" readonly >
+
+                            {% else %}
+                             <input class="form-control" type="text" id="expiration_bill" name="expiration_bill" value="{{ assigned.expiration_bill }}" readonly >
+
+                            {% endif %}
+                        {% else %}
+                        <input class="form-control" type="text" id="expiration_bill" name="expiration_bill"  value="0" readonly >
+                      {% endif %}
+                        
+                      </div>
+
+
+
+                    {% comment %} <div class="input-group mt-3">
+                        <span class="input-group-text" id="basic-addon3">Renewal Bill</span>
+                        {% if assigned.install_amount >= assigned.total_invoice %}
+                        <input class="form-control" type="text" id="renewal_bill" name="renewal_bill" value="{{ assigned.total_invoice }}" readonly >
+                        {% else %}
+                        <input class="form-control" type="text" id="renewal_bill" name="renewal_bill" value="{{ assigned.install_amount }}" readonly >
+                        {% endif %}
+                      </div>  {% endcomment %}
+
+
+                    <div class=" mt-3">
+                        <input class="form-control" type="date" id="end_date" name="end_date" value="{{ dated }}" hidden>
+                    
+                    </div>
+                    
+
+                    {% endif %}
+
+
+
+                    <div class="input-group mt-3">
+                        <span class="input-group-text" id="basic-addon3">Total amount due</span>
+                        {% if assigned.invoice_type == "expiry" %}
+                        <input class="form-control" type="text" id="total_amount_due" name="total_amount_due" placeholder="Total amount due..." readonly>
+                        {% else %}
+                        <input class="form-control" type="text" id="total_amount_due" name="total_amount_due" value="{{ assigned.expiration_bill }}"  readonly>
+                        {% endif %}
+
+                    </div>
+
+                    <div class="input-group mt-3">
+                        <span class="input-group-text" id="basic-addon3">Outstanding Balance</span>
+                        <input class="form-control" type="text" id="balance" name="outstanding_balance" placeholder="Outstanding balance..." readonly>
+
+                    </div>
+
+                    <div class="input-group mt-3">
+                        <span class="input-group-text" id="basic-addon3">Amount to be paid</span>
+                        <input class="form-control" type="text" id="paid" name="" placeholder="Amount to be paid..." readonly>
+                    </div>
+
+
+                    <div class="input-group mt-3">
+                        <span class="input-group-text" id="basic-addon3">Amount being paid</span>
+                        <input class="form-control" type="text" id="amount_paid" name="amount_paid" placeholder="Enter amount paid..." onchange="findArrears()" required>
+                    </div>
+
+                    <div class="input-group mt-3" id="arr">
+                        <span class="input-group-text" id="basic-addon3">Arrears</span>
+                        <input class="form-control" type="text" id="arrears" name="arrears" value="" placeholder="Arrears..." readonly >
+                    </div>
+                    {% comment %} <div class="input-group mt-3">
+                        <span class="input-group-text" id="basic-addon3">Balance</span>
+                        <input class="form-control" type="text" id="amount_paid" name="amount_paid" placeholder="Enter amount paid..." onchange="findArrears()" required>
+                    </div> {% endcomment %}
+
+
+  
+  
+                  <div class=" mt-3">
+                  <textarea class="form-control" id="remarks" name="remarks" placeholder="Remarks..." ></textarea>
+                
+                  </div>
+  
+                  
+                  {% comment %} <div class="d-flex flex-row">
+                       <div class="mt-3 mr-3">
+                        <button id="submit" type="submit" class="btn btn-primary btn-sm">Pay Offline</button>
+                        </div>
+                        <div class="mt-3 mr-3">
+                          <button class="btn btn-primary btn-sm">Pay Online</button>
+                      </div>
+                      <div class="mt-3">
+                        <button class="btn btn-primary btn-sm">Pay Service Provider</button>
+                    </div>
+                  </div>  {% endcomment %}
+
+                  <div class="mt-5 text-center">
+                    <a onclick="window.history.go(-1); return false;"><button type="button" class="btn btn-primary btn-sm mr-3" >Back</button></a>
+
+                    <button id="payment_submit" data-member-id="{{ mid }}" data-pk="{{ assigned.pk }}" data-client-id="{{ clid }}" data-url="{% url 'client:ajax_load_bill' %}" type="submit" class="btn btn-sm ml-3" style="background-color: #006c40; color: #fff">Proceed to Payment</button>
+                </div>
+                  
+
+                  {% comment %} <a onclick="window.history.go(-1); return false;"><button type="button" class="btn btn-primary btn-sm mt-3">Back</button></a> {% endcomment %}
+
+                       
+                    </form>
+  
+            
+                </div>
+            </div>
+        </div>
+    </div>
+  </div> 
+  
+  {% comment %} {% block script %}
+  let end_date = document.getElementById("end_date")
+  end_date.value =  {{ assigned.deadline }}
+  alert(end_date.value)
+  {% endblock %} {% endcomment %}
+   
+ 
+
+  
+</div>
+ 
+</div>
+
+</div>
+
+
+
+
+{% comment %} 
+<footer>
+  <div class="pull-right">
+      Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+  </div>
+  <div class="clearfix"></div>
+</footer> {% endcomment %}
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+
+<script>
+{% if setItem == True %}
+
+window.localStorage.setItem('token', '1fe8480feff19495f8799e2133d7e60fe8a7628fdbe9416e467343a49978d3c5');
+
+{% endif %}
+</script>
+
+
+<script>
+{% if messages %}
+{% for msg in messages %}
+  swal('{{ msg }}');
+
+{% endfor %}
+
+window.localStorage.setItem('token', '1fe8480feff19495f8799e2133d7e60fe8a7628fdbe9416e467343a49978d3c5');
+{% endif %}
+
+</script>
+
+
+<script>
+
+
+
+
+
+
+
+
+
+
+$(document).ready(function () {
+
+$('#client_payments').DataTable({
+pagingType: 'full_numbers',
+});
+
+});
+
+$(document).ready(function () {
+
+$('#payments').DataTable({
+pagingType: 'full_numbers',
+});
+
+});
+
+{% comment %} 
+$(document).ready(function () {
+
+$('#assigned_payments').DataTable({
+pagingType: 'full_numbers',
+});
+
+});
+
+
+
+$(document).ready(function () {
+
+$('#all_payments').DataTable({
+pagingType: 'full_numbers',
+});
+
+});
+{% endcomment %}
+
+{% comment %} 
+$(document).ready(function () {
+
+$('#archived_table').DataTable({
+pagingType: 'full_numbers',
+});
+
+});
+
+$(document).ready(function () {
+
+$('#payment_history').DataTable({
+pagingType: 'full_numbers',
+});
+
+});
+
+$(document).ready(function () {
+
+$('#module_fees').DataTable({
+pagingType: 'full_numbers',
+});
+
+});
+
+$(document).ready(function () {
+
+$('#active_fees').DataTable({
+pagingType: 'full_numbers',
+});
+
+});
+
+$(document).ready(function () {
+
+$('#special_history').DataTable({
+pagingType: 'full_numbers',
+});
+
+});
+
+$(document).ready(function () {
+
+$('#payment_details').DataTable({
+pagingType: 'full_numbers',
+});
+
+});
+
+$(document).ready(function () {
+
+$('#sizes').DataTable({
+pagingType: 'full_numbers',
+});
+
+});
+{% endcomment %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+$(document).ready(function(){
+
+$('#payment_submit').click(function(e){
+
+e.preventDefault()
+
+var member = $('#member').val();
+var member_id = $(this).attr('data-member-id');
+
+var url = $(this).attr('data-url');
+var csrf = $('input[name=csrfmiddlewaretoken]').val()
+
+var amount_paid = $('#amount_paid').val();
+
+var client_id = $(this).attr('data-client-id');
+var invoice_id = $(this).attr('data-pk');
+
+
+var branch = $('#branch').val();
+var member_category = $('#member_category').val();
+var group = $('#group').val();
+var subgroup = $('#subgroup').val();
+
+
+var fee_type = $('#fee_type').val();
+var fee_description = $('#fee_description').val();
+
+
+var outstanding_bill = $('#outstanding_bill').val();
+var remarks = $('#remarks').val();
+var user_type = $('#user_type').val();
+var assigned_duration = $('#assigned_duration').val();
+var expiration_bill = $('#expiration_bill').val();
+// var client_id = $('#client_id').val();
+var install_range = $('#install_range').val();
+var install_period = $('#install_period').val();
+var total_amount_due = $('#total_amount_due').val();
+var outstanding_balance = $('#outstanding_balance').val();
+
+var payment_status = $('#payment_status').val();
+var end_date = $('#end_date').val();
+var arrears = $('#arrears').val();
+
+
+//alert(url)
+
+//alert(amount)
+
+if(confirm("\tAre you sure you want to proceed to payment? \nYou'll have a maximum of 5 minutes to make payment")){
+
+//alert("Submitting")
+
+
+$.ajax({
+url: url,
+method: "POST",
+data: {
+    member,
+    member_id,
+    amount_paid,
+   
+    client_id,
+    invoice_id,
+    branch,
+    member_category,
+    group,
+    subgroup,
+    fee_type,
+    fee_description,
+
+    outstanding_bill,
+    remarks,
+    user_type,
+    assigned_duration,
+    expiration_bill,
+    install_range,
+    install_period,
+    total_amount_due,
+    outstanding_balance,
+    
+    payment_status,
+    end_date,
+    arrears,
+
+    
+    csrfmiddlewaretoken: csrf
+}
+}).done(function(data){
+
+    // alert("Done")
+    alert("Done")
+    window.location.href = data;
+    // e.preventDefault()
+
+
+  }).fail(function(data){
+    alert("Something went wrong")
+
+    console.log(data)
+
+  })
+
+
+}
+
+
+})
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$(document).ready(function(){
+$('#delete_button').click(function(){
+var id = [];
+var url = $("#delete_button").attr("data-delete-url");
+var csrf = $('input[name=csrfmiddlewaretoken]').val()
+
+$(':checkbox:checked').each(function(i){
+id[i]=$(this).val()
+})
+
+if(id.length == 0){
+alert("Please select item to delete")
+}
+else{
+if(confirm("Are you sure you want to delete this item?")){
+
+  $.ajax({
+    url: url,
+    method: "POST",
+    data: {
+      id,
+      csrfmiddlewaretoken: csrf
+    },
+    success: function(response){
+      for(var i=0; i<id.length; i++){
+        $('tr#'+id[i]+'').css('background-color', '#ccc');
+        $('tr#'+id[i]+'').fadeOut('slow');
+      }
+    } 
+  })   
+}
+
+}
+})
+})
+
+
+
+$(document).ready(function(){
+$('#delete_assigned').click(function(){
+var id = [];
+var url = $("#delete_assigned").attr("data-remove-url");
+var csrf = $('input[name=csrfmiddlewaretoken]').val()
+$(':checkbox:checked').each(function(i){
+id[i]=$(this).val()
+})
+
+if(id.length == 0){
+alert("Please select item to delete")
+}
+else{
+if(confirm("Are you sure you want to delete this item?")){
+
+$.ajax({
+  url: url,
+  method: "POST",
+  data: {
+    id,
+    csrfmiddlewaretoken: csrf
+  },
+  success: function(response){
+    for(var i=0; i<id.length; i++){
+      $('tr#'+id[i]+'').css('background-color', '#ccc');
+      $('tr#'+id[i]+'').fadeOut('slow');
+    }
+  } 
+})   
+}
+}
+})
+})
+
+</script>
+
+
+
+<script>
+$("#user_member").change(function () {
+var url = $("#makePaymentForm").attr("data-fee-url");
+var member = $(this).val();
+
+$.ajax({
+url: url,
+data: {
+ 'member': member,
+},
+success: function (data) {
+ $("#fee_type").html(data);
+}
+});
+
+});
+
+</script>
+
+
+
+<script>
+$("#fee_type").change(function () {
+var url = $("#makePaymentForm").attr("data-balance-url");
+var member = $("#user_member").val();
+var fee_type = $(this).val();
+
+$.ajax({
+url: url,
+data: {
+ 'fee_type': fee_type,
+ 'member': member,
+},
+success: function (data) {
+ $("#user_type").html(data);
+}
+});
+
+});
+
+</script>
+
+
+
+
+<script>
+
+$("#fee_type").change(function () {
+var url = $("#assignPaymentForm").attr("data-invoice-url");
+var branch = $("#branch").val();
+var member_category = $("#member_category").val();
+var group = $("#group").val();
+var subgroup = $("#subgroup").val();
+
+var fee_type = $(this).val();
+
+$.ajax({
+url: url,
+data: {
+'branch': branch,
+'member_category': member_category,
+'group': group,
+'subgroup': subgroup,
+'fee_type': fee_type,
+},
+success: function (data) {
+ // alert(data)
+ $("#total").val(data);
+}
+});
+
+});
+
+$(document).ready(function(){
+$("#numver").change(function () {
+var url = $("#paymentForm").attr("data-amount-url");
+var id = $("#paymentForm").attr("data-id");
+var range = $('input[name="install_range"]:checked').val();
+//  var range = $(".range").val();
+
+var period = $(this).val();
+
+$.ajax({
+url: url,
+data: {
+'id': id,
+'range': range,
+'period': period,
+},
+success: function (data) {
+ // alert(data)
+ $("#total_amount_due").val(data);
+}
+});
+
+});
+
+})
+
+
+
+$(document).ready(function(){
+$("#payment_status").change(function () {
+var url = $("#paymentForm").attr("data-credit-url");
+var member = $("#member").val();
+var paid = $("#paid")
+var total_amount_due = $("#total_amount_due")
+
+$.ajax({
+url: url,
+data: {
+'member': member,
+
+},
+success: function (data) {
+ // alert(data)
+ $("#balance").val(data);
+
+ $("#paid").val(parseInt($("#total_amount_due").val()) - parseInt(data))
+ if(parseInt($("#paid").val()) < 0){
+  $("#paid").val(0)
+  }
+}
+});
+
+});
+
+})
+
+
+
+$(document).ready(function(){
+$("#numver").change(function () {
+var url = $("#paymentForm").attr("data-credit-url");
+var member = $("#member").val();
+var paid = $("#paid")
+var total_amount_due = $("#total_amount_due")
+
+$.ajax({
+url: url,
+data: {
+'member': member,
+
+},
+success: function (data) {
+ // alert(data)
+ $("#balance").val(data);
+
+ $("#paid").val(parseInt($("#total_amount_due").val()) - parseInt(data))
+ if(parseInt($("#paid").val()) < 0){
+  $("#paid").val(0)
+  }
+}
+});
+
+});
+
+})
+
+
+$(document).ready(function(){
+if (!localStorage.getItem("token")){
+window.location.href = '/';
+}
+
+})
+
+
+$(document).ready(function(){
+
+$("#year_range").change(function(){
+var year_range=$(this).val();
+
+window.location.href="?year_range="+year_range
+
+})
+})
+
+</script>
+
+</body>
+</html>
+
+

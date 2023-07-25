@@ -1,0 +1,46 @@
+{% extends 'superuser/base.html' %}
+ 
+{% block content %}
+
+
+<div class="form-body">
+    <div class="row">
+        <div class="form-holder">
+            <div class="form-content">
+                <div class="form-items">
+                    <h2 class="text-center mb-3" >Confirm Delete</h2>
+  
+                    <form action="{% url 'superuser:deleteFeeType' id=fee_type.id %}" method="post" id="delete_fee_type" class="row g-4 mt-3">
+                        {% csrf_token %}
+                    
+                        <div class="col-auto">
+                         <div class=" form-check">
+                            {% comment %} <input class="form-check-input" type="radio" name="sms" id="sms" value="sms" required> {% endcomment %}
+                            <label class="form-check-label" for="sms">Are you sure you want to delete "{{fee_type}}" ?</label>
+                          </div>
+                        
+                        </div>
+                    
+                    
+                         <div class="col-auto ">
+                            <button type="submit" class="btn btn-primary btn-sm mb-3">Yes</button>
+                            <a onclick="window.history.go(-1); return false;"><button type="button" class="btn btn-primary btn-sm">Cancel</button></a>
+
+                           {% comment %} <button class="btn btn-sm btn-outline-success">Units Left</button> {% endcomment %}
+                    
+                          </div> 
+                    
+                      </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+  </div> 
+  
+
+   
+ 
+
+
+{% endblock %}

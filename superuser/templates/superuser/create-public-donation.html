@@ -1,0 +1,83 @@
+{% extends 'superuser/base.html' %}
+{% load static %}
+{% block content %}
+{% comment %} this night is cold in the kingdon  {% endcomment %}
+        <div class="form-body">
+            <div class="row">
+                <div class="form-holder">
+                    <div class="form-content">
+                        <div class="form-items">
+                            <h2 class="text-center mb-4" >Create Public Donation</h2>
+        
+                            <form class="" action="" method="post" >
+        
+                                {% csrf_token %}
+
+                                <div class=" mt-3" style="">
+                                    {% comment %} <label class="" for="logo">Organization logo</label> {% endcomment %}
+                                  <img src="{{ company.logo.url }}" alt="logo-preview" class="logo-image" width="250px" heigth="250px" title="Organization Logo">
+
+                                    {% comment %} <input type="file" class="form-control" id="logo" name="logo" value="{{ company.logo.url }}" accept="image/png, .jpeg, .jpg, image/gif" onclick="getLogo()" required> {% endcomment %}
+                                  </div>
+
+
+                                <div class="input-group mt-3">
+                                    <label class="input-group-text" for="logo">Organization name</label>
+                                   <input class="form-control" type="text" id="organization_name" name="organization_name" value="{{ company.company_name }}" readonly>
+
+                                </div>
+
+                                <div class="input-group mt-3">
+                                    <label class="input-group-text" for="logo">Contact</label>
+                                    <input class="form-control" type="text" id="contact" name="contact" value="{{company.contact}}" readonly>
+                                </div>
+
+                                <div class="input-group mt-3">
+                                    <label class="input-group-text" for="logo">Email</label>
+                                    <input class="form-control" type="text" id="email" name="email" value="{{company.email}}" readonly>
+                                </div>
+
+                                
+                                <div class="input-group mt-3">
+                                    <label class="input-group-text" for="logo">Donation name</label>
+                                   <input class="form-control" type="text" id="donation_name" name="donation_name" placeholder="Eg. Building Project Contribution" required>
+
+                                </div>
+
+
+
+                                <div class="input-group mt-3">
+                                    <label class="input-group-text" for="logo">Target amount</label>
+                                    <input class="form-control" type="text" id="target_amount" name="target_amount" placeholder="Enter target amount(optional)..." title="This side is optional">
+
+                                </div>
+
+                                <div class="input-group mt-3">
+                                    <label class="input-group-text" for="logo">Website</label>
+                                   <input class="form-control" type="text" id="website" name="website" placeholder="A website with information about donation (optional)">
+                                </div>
+                                
+                                <div class="col-auto mt-3">
+                                    <label class="form-text" for="purpose">Purpose</label>
+                                    <textarea type="text" rows="10" cols="50" class="form-control" name="purpose" id="purpose" placeholder="A short note about donation..." ></textarea>
+                                </div>
+
+                               
+
+        
+                                  <div class="mt-3 text-center">
+                                    <a onclick="window.history.go(-1); return false;"><button type="button" class="btn btn-primary btn-sm mr-3" >Back</button></a>
+        
+                                    <button id="submit" type="submit" class="btn btn-sm ml-3" style="background-color: #006c40; color: #fff">Submit</button>
+                                </div>
+                            </form>
+        
+        
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+{% endblock %}

@@ -1,0 +1,139 @@
+{% extends 'superuser/base.html' %}
+ 
+{% block content %}
+{% comment %} 
+        <form action="" method="post" id="assignPaymentForm" name="" data-invoice-url="{% url 'superuser:ajax_load_invoice' %}" novalidate>
+            {% csrf_token %}
+            {% comment %} <input type='text' name='branch' value="" id="branch" > 
+
+            <select id="member" name="member" required class="data">
+              <option selected>Member</option>
+              {% for member in members %}
+              <option value="{{ member.member }}" id="{{ member.id }}">{{ member.member }}</option>
+              {% empty %}
+              <option value="Gideon K. Impraim" id="member">Gideon K. Impraim</option>
+              <option value="Samuel Ofosu" id="member">Samuel Ofosu</option>
+              {% endfor %}
+          </select>
+          <br>
+         
+          <input type="text" id="branch" name="branch" value="{{ invoice.branch }}" readonly><br>
+          <input type="text" id="member_category" name="member_category" value="{{ invoice.member_category }}" readonly><br>
+          <input type="text" id="group" name="group" value="{{ invoice.group }}" readonly><br>
+          <input type="text" id="subgroup" name="subgroup" value="{{ invoice.subgroup }}" readonly><br>
+          
+            <select id="fee_type" name="fee_type" required class="data">
+              <option value="{{ invoice.fee_type.id }}" id="{{ fee_type.id }}">{{ invoice.fee_type }}</option>
+            </select>
+            <br>
+
+            <select id="fee_description" name="fee_description" required class="data">
+                <option value="{{ invoice.fee_description.id }}" id="{{ fee_description.id }}">{{ invoice.fee_description }}</option>
+            </select><br>
+
+            <label for='total_invoice'>Total Invoice</label>
+            <input type="text" id="total" value="{{ invoice.total_amount }}" name="total_invoice" placeholder="Enter total invoice...." readonly > 
+ 
+
+            <p>Installment Payment</p>
+            {% for period in period %}
+            <input type="radio" name="install_range" value="{{ period.name }}" id="install{{ forloop.counter }}" onchange="radioCheck()">
+            <label for="install_range">{{period.name}}</label>
+            {% endfor %}
+
+            <div>
+            <input type="text" id="period" name="install_period" placeholder="Enter period" disabled>
+            </div>
+
+            <label for="start">Set date</label>
+            <input type="date" name="set_pay_date" id="set_pay_date"  disabled>
+          
+
+            <br>
+            <label for="start_date">Start Date</label>
+            <input type="date" name="start_date" id="start_date" >
+            <br>
+
+            <label for="start_date">End Date</label>
+            <input id="end_date" type="date" name="end_date" min="">
+            <br>
+            <input type="text" id="amount" name="install_amount" placeholder="Enter the amount to be paid" disabled>
+<br>
+            <select id="account_status" name="account_status" required class="">
+              <option selected>Account Status</option>
+              <option value="subscriber" id="subscriber">Subscriber</option>
+              <option value="non_subscriber" id="non_subscriber">Non Subscriber</option>
+            </select>
+       <br>
+            <input type="submit" value="Assign">
+        </form> 
+ {% endcomment %}
+
+
+
+
+               
+<div class="form-body">
+  <div class="row">
+      <div class="form-holder">
+          <div class="form-content">
+              <div class="form-items">
+                <h2 class="text-center mb-5" >Assign Donation</h2>
+
+                  <form action="" method="post" id="assignPaymentForm" name="" data-invoice-url="{% url 'superuser:ajax_load_invoice' %}" >
+
+                      {% csrf_token %}
+
+                   
+
+
+                  <div class="input-group mt-3">
+                    <span class="input-group-text" id="basic-addon3">Donation name</span>
+                    <input class="form-control" type="text" id="branch" name="donation_name" value="{{ donation.donation_name }}" readonly >
+                  </div>
+
+                
+               <div class="input-group mt-3" id="total_invoice">
+                <label class="input-group-text" for="fee_type">Target amount</label>
+                {% if donation.target_amount == 0 %}
+                <input class="form-control" type="text" id="total" value="None" name="total_invoice" readonly > 
+                {% else %}
+                <input class="form-control" type="text" id="total" value="{{ donation.target_amount }}" name="total_invoice" readonly > 
+                {% endif %}
+               </div>
+
+
+               <div class="input-group mt-3">
+                <label class="input-group-text" for="member">Member</label>
+                <select class="form-select" name="member" id="member" required>
+                  <option selected value="">Member</option>
+                  {% for member in some_members %}
+            
+                  <option value="{{ member.member }}" id="{{ member.id }}" >{{ member.member }}</option>
+        
+                  {% endfor %}
+               </select>
+           </div>
+
+           
+            <div class="form-check mt-3">
+                <input type="checkbox" class="fee_items form-check-input" id="all_members" name="all_members" value="all_members" onchange="disbleMembers(this)">
+                <label for="fee_type">Assign to all members</label>
+            </div> 
+           
+
+
+                <div class="mt-3 text-center">
+                  <a onclick="window.history.go(-1); return false;"><button type="button" class="btn btn-primary btn-sm mr-3" >Back</button></a>
+
+                  <button id="submit" type="submit" class="btn btn-sm ml-3" style="background-color: #006c40; color: #fff">Assign</button>
+              </div>
+                  </form>
+
+
+              </div>
+          </div>
+      </div>
+  </div>
+</div> 
+        {% endblock %}

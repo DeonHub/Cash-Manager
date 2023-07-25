@@ -1,0 +1,142 @@
+{% extends 'superuser/base.html' %}
+
+{%load crispy_forms_tags %}
+{% load widget_tweaks %}
+
+{% block content %}
+
+<br/>
+        <hr>        
+
+        <form method="get" class="mt-4">
+            {% csrf_token %}
+            <div class="well">
+
+              <div class="row ">
+                
+            <div class="col">
+                <div class="form-group">
+                    {% render_field my_filter.form.branch class="form-control" placeholder="Filter by Branch..."%}
+                  </div>
+            </div>
+
+            <div class="col">
+              <div class="form-group">
+                  {% render_field my_filter.form.user class="form-control" placeholder="Filter by Admin..."%}
+                </div>
+          </div>
+       
+
+            <div class="col">
+              <button type="submit" class="btn btn-sm btn-block" style="float: center;background-color: #f7941d">
+                  <span class="glyphicon glyphicon-search"></span> Filter
+                </button>
+              </div>
+
+            </div>
+
+ 
+          </div>
+          </form>
+        <hr>        
+        <br/>
+
+<h2 class="text-center mt-5">Activities</h2>
+
+<div class="users-table table-responsive-md"> 
+  <table class="table table-striped table-hover table-sm" id="activites_log">
+    <thead>
+
+            <th>#</th>
+            <th>Action</th>
+            <th>Branch</th>
+            <th>Performed On</th>
+        </tr>
+    </thead>
+    <tbody>
+
+      {% csrf_token %}
+
+
+      {% for activity in activities %}
+
+        <tr id="{{ activity.id }}" >
+
+            <td>{{forloop.counter}}</td>
+
+            <td>{{ activity.user }} {{activity.action}}</td>
+            <td>{{ activity.branch }}</td>
+
+            <td>{{activity.date_created}}</td>
+    
+
+        </tr>
+       {% endfor %} 
+       
+    </tbody>
+</table>
+<br/>
+</div>
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+{% comment %} {% if activities.has_previous %}  
+<a href="?page=1"> First </a>
+<a href="?page={{ activities.previous_page_number}}"> Previous </a>
+
+{% endif %}  
+
+Page {{ activities.number }} of {{ activities.paginator.num_pages }}
+
+{% if activities.has_next %}  
+<a href="?page={{activities.next_page_number}}"> Next </a>
+<a href="?page={{ activities.paginator.num_pages}}"> Last </a>
+
+{% endif %} 
+ {% endcomment %}
+
+
+
+{% comment %} <div class="">
+  <div class="mt-3">
+  Page {{ activities.number }} of {{ activities.paginator.num_pages }}
+  </div>
+  
+  <div style="float:right;" class="">
+  {% if activities.has_other_pages %}
+  <nav aria-label="Page navigation example">
+  <ul class="pagination">
+      {% if activities.has_previous %}
+      <li class="page-item" id="{{ activities.previous_page_number }}"><span class="page-link">&laquo;</span></li>
+      {% else %}
+      <li class="page-item" class="disabled"><span class="page-link">&laquo;</span></li>
+      {% endif %}
+  
+      {% for i in activities.paginator.page_range %}
+          {% if activities.number == i %}
+          <li class="page-item" class="active"><span class="page-link">{{ i }}</span></li>
+          {% else %}
+          <li class="page-item" id="{{ i }}"><span class="page-link">{{ i }}</span></li>
+          {% endif %}
+      {% endfor %}
+  
+  
+      {% if all_mactivitiesembers.has_next %}
+      <li class="page-item" id="{{ activities.next_page_number }}"><span class="page-link">&raquo;</span></li>
+      {% else %}
+      <li class="page-item" class="disabled"><span class="page-link">&raquo;</span></li>
+      {% endif %}
+  </ul>
+  </nav>
+  {% endif %}
+  </div>
+  
+  <br/>
+  </div> {% endcomment %}
+  </div>
+
+{% endblock %}

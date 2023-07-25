@@ -1,0 +1,57 @@
+$media-mobile: "only screen and (max-width : 760px) and (min-width : 320px)";
+
+
+.logged-out{
+    background-color: #F8F0E3 ;
+
+    & .application-main{
+        & main{
+            & .auth-form {
+
+                & .image{
+                    margin:auto;
+                    & img{
+                        margin-top: -5%;
+                        width: 250px;
+                        height: 150px;
+                    }
+                    & h3{
+                        color: #000;
+                        margin-top: 10%;
+                    }
+                
+                & .auth-form-body{
+                    width: 50%;
+                    background-color: grey;
+
+                    
+                    & form{
+                        background-color: black;
+                    }
+
+                    
+                    }
+
+                }
+            }
+        }
+    }
+}
+
+//Responsive Dashboard
+@media #{$media-mobile} {
+    .logged-out{
+       width: 100%;
+    
+       & .auth-form-body{
+        width: 100%;
+
+        
+        // & form{
+        //     background-color: black;
+        // }
+
+        
+        }
+    }
+}

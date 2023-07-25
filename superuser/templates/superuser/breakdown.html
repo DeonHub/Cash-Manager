@@ -1,0 +1,44 @@
+{% comment %} <!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <title>  </title>
+
+    </head>
+    <body>
+        
+<div class="container" >
+
+
+    <br/> {% endcomment %}
+ 
+<div class="body-section">
+    <table class="table-bordered">
+        <thead>
+            <tr>
+                <th>Fee Item</th>
+                <th class="w-20">Price(GHS)</th>
+                {% comment %} <th class="w-20">Total({{base}})</th> {% endcomment %}
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for key, value in data.items %}
+            <tr>
+                <td> {{ key }} </td> 
+                <td> {{ value }} </td>
+                {% comment %} <td> {{ value }} </td> {% endcomment %}
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+</div>
+
+     
+{% comment %} </div>      
+
+    </body>
+</html> {% endcomment %}
+
+
+

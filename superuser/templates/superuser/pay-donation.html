@@ -1,0 +1,100 @@
+{% extends 'superuser/base.html' %}
+ 
+{% block content %}
+
+
+
+
+
+
+
+<div class="form-body">
+    <div class="row">
+        <div class="form-holder">
+            <div class="form-content">
+                <div class="form-items">
+                    <h2 class="text-center mb-3">Pay Donation</h2>
+                    <img src="{{ organizations.logo.url }}" width="250px" height="250px">
+  
+                    <form action="" method="post" id="ipaymentForm" name="" data-amount-url="{% url 'superuser:ajax_load_amount_due' %}" data-id="{{ assigned.id }}" data-credit-url="{% url 'superuser:ajax_load_credit' %}">
+  
+                        {% csrf_token %}
+
+                        <div style="border: 1px solid grey; padding: 10px 15px; border-radius: 10px;">
+                        <label class="mt-3">Entry Officers Details</label>
+                
+                        <div class=" mt-3">
+                        <input class="form-control" type="text" id="payers_first_name" name="payers_first_name"  value="{{ firstname }}" placeholder="First name..." readonly >
+                        </div>
+        
+                        <div class=" mt-3">
+                          <input class="form-control" type="text" id="payers_last_name" name="payers_last_name"  value="{{ surname }}" placeholder="Last name..." readonly >
+                        </div>
+        
+                        <div class=" mt-3">
+                            <input class="form-control" type="tel" id="contact" name="contact"  value="{{ phone }}" placeholder="Contact..." readonly >
+                        </div>
+        
+                        <div class=" mt-3">
+                          <input class="form-control" type="email" id="email" name="email_address"  value="{{ email }}" placeholder="Email..." readonly >
+                        </div>
+                        <p style="color: red; font-size: 15px;" class="mt-3">This is a required section*</p>
+                    </div>
+  
+                    <br/>
+                    <br/>
+
+                        <div class="input-group mt-3">
+                            <label class="input-group-text" for="start_date">Member</label>
+                            <input class="form-control" type="text" id="member" name="member"  value="{{ assigned.member }}" readonly >
+                        </div>
+
+
+                        <div class="input-group mt-3">
+                            <label class="input-group-text" for="fee_type">Fee Type</label>
+
+                            <input class="form-control" type="text" id="donation_name" name="donation_name" value="{{ assigned.donation_name }}" readonly >
+
+                        </div>
+
+                        <div class="input-group mt-3">
+                            <label class="input-group-text" for="fee_type">Target Amount</label>
+
+                            <input class="form-control" type="text" id="donation_name" name=""  value="{{ assigned.total_invoice }}" readonly >
+
+                        </div>
+                   
+
+
+                    <div class="input-group mt-3">
+                        <span class="input-group-text" id="basic-addon3">Amount being paid</span>
+                        <input class="form-control" type="text" id="amount_paid" name="amount_paid" placeholder="Enter amount being paid..." required>
+                    </div>
+
+  
+                  
+                  <div class="d-flex flex-row mt-3">
+                       <div class="mt-3 mr-3">
+                        <button id="submit" type="submit" class="btn btn-primary btn-sm">Pay Offline</button>
+                        </div>
+                        <div class="mt-3 mr-3">
+                          <button class="btn btn-primary btn-sm">Pay Online</button>
+                      </div>
+
+                  </div> 
+                  
+
+                  <a onclick="window.history.go(-1); return false;"><button type="button" class="btn btn-primary btn-sm mt-3">Back</button></a>
+
+                       
+                    </form>
+  
+            
+                </div>
+            </div>
+        </div>
+    </div>
+  </div> 
+   
+ 
+{% endblock%}

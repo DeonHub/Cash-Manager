@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <title> {{ detail.invoice_no }} </title>
+        {% load static %}
+
+        <style>
+
+            body{
+               {% comment %} background-color: #F6F6F6; {% endcomment %}
+                margin: 0;
+                padding: 0;
+            }
+            h1,h2,h3,h4,h5,h6{
+                margin: 0;
+                padding: 0;
+            }
+            p{
+                margin: 0;
+                padding: 0;
+            } 
+            .d-flex{
+                display: flex;
+                flex-direction: row;
+            }
+            .container{
+                width: 100%;
+                {% comment %} margin-right: auto;
+                margin-left: auto; {% endcomment %}
+            }
+            .brand-section{
+               background-color: #0d1033;
+               {% comment %} padding: 10px 40px; {% endcomment %}
+            }
+            .logo{
+                width: 100%;
+            }
+            
+            .row{
+                display: flex;
+                {% comment %} flex-wrap: wrap; {% endcomment %}
+                flex-direction: row;
+                
+            }
+            .user{
+                display: flex;
+                flex-direction: row;
+            }
+            .col-6{
+                width: 100%;
+                {% comment %} flex: 0 0 auto; {% endcomment %}
+            }
+            .text-white{
+                color: #fff;
+            }
+
+            .company-details{
+                {% comment %} float: right; {% endcomment %}
+                {% comment %} text-align: right; {% endcomment %}
+            }
+            {% comment %} .body-section{
+                padding: 16px;
+            } {% endcomment %}
+            {% comment %} .heading{
+                font-size: 20px;
+                margin-bottom: 08px;
+            } {% endcomment %}
+            .sub-heading{
+                color: #262626;
+                margin-bottom: 05px;
+            }
+            table{
+                background-color: #fff;
+                width: 100%;
+                border-collapse: collapse;
+            }
+            table thead tr{
+                border: 1px solid #111;
+                background-color: #f2f2f2;
+            }
+            table td {
+                vertical-align: middle !important;
+                text-align: center;
+            }
+            table th, table td {
+                padding-top: 08px;
+                padding-bottom: 08px;
+            }
+            .table-bordered{
+                box-shadow: 0px 0px 5px 0.5px gray;
+            }
+            .table-bordered td, .table-bordered th {
+                border: 1px solid #dee2e6;
+            }
+            .text-right{
+                text-align: center;
+            }
+            .w-20{
+                width: 20%;
+            }
+            .float-right{
+                float: right;
+            }
+            
+        </style>
+    </head>
+    <body>
+        
+<div class="container">
+    
+    <center>
+        <div class="brand-section">
+            <div class=" user" style="display:flex; flex-direction: column;">
+                <div class="">
+                    {% comment %} <h1 class="text-white">FABCART</h1> {% endcomment %}
+                    <img src="{{ company.logo.path }}" height="200px" width="200px">
+                </div>
+                <div class="">
+                    <div class="company-details" style="margin-top: -10px; font-size: 12px;">
+                        <p class="text-white">{{ company.company_name }}</p>
+                        <p class="text-white">{{ company.email }}</p>
+                        <p class="text-white">+{{ company.contact }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </center>
+
+<br/>
+    <div class="body-sections">
+        <div class="row d-flex f-row">
+            <div class="">
+                <h1 class="">Invoice No: {{ detail.invoice_no }}</h1>
+                <p class="sub-heading">Paid On: {{ detail.date_created }} </p>
+                <p class="sub-heading">Paid For: {{ detail.member }} </p>
+
+                <p class="sub-heading">Fee Type: {{ detail.donation_name }}</p>
+            </div><br/>
+            {% comment %} <div class="">
+                <p class="sub-heading">Paid By:  {{ detail.payers_first_name }} {{ detail.payers_last_name }}</p>
+                <p class="sub-heading">Contact:  {{ detail.contact }}</p>
+                <p class="sub-heading">Email Address:  {{ detail.email_address }}</p>
+                <p class="sub-heading">City,State,Pincode:  Accra </p>
+            </div> {% endcomment %}
+        </div>
+    </div>
+ <br/>
+    <div class="body-section" >
+        {% comment %} <h3 class="heading">Ordered Items</h3> {% endcomment %}
+        <table class="table-bordered">
+            <thead>
+                <tr>
+                    <th>Donation name</th>
+                    <th class="w-20">Amount Paid</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                
+                <tr>
+                    <td> {{ detail.donation_name }} </td> 
+                    <td> {{ detail.amount_paid }} </td>
+                </tr>
+        
+            </tbody>
+        </table>
+
+
+        <br>
+        <div style=" margin-left: 600px; text-align: center;">
+            <img src={{ company.signature.path }} height="50px" width="50px"><br/>
+            ............................................
+            <p>The Manager</p>
+            </div>
+
+    </div>
+<br/>
+<br/>
+<br/>
+
+   <div class="body-section" style="float: right; text-align: center;">
+        <p>&copy; Copyright 2022 - Akwaaba Solutions. All rights reserved. 
+            <a href="https://www.akwaabasolutions.com/" class="float-right">www.akwaabasolutions.com</a>
+        </p>
+    </div>      
+</div>      
+
+    </body>
+</html>
+
+
+

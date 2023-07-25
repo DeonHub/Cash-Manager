@@ -1,0 +1,54 @@
+.bg-image-vertical {
+    position: relative;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: auto 100%;
+    }
+
+form{
+    width: 28rem;
+    display:flex;
+    flex-direction: column;
+    text-align: center;
+}  
+
+#logo{
+    margin-bottom:10%;
+}
+    
+@media (min-width: 1025px) {
+.h-custom-2 {
+height: 100%;
+}
+
+}
+
+
+
+@media only screen and (max-width: 600px) {
+    form{
+        width: 50rem;
+        display:flex;
+        flex-direction: column;
+        text-align: center;
+        /*justify-content:center; */
+        /* background-color:black; */
+        /* margin-right:100px; */
+    }
+
+    #logo{
+        margin-bottom:-5%;
+        /* margin-left:5%; */
+        /* margin-right:-5%; */
+        width:100vw;
+    }
+
+     
+/* 
+    #content{
+
+        margin-right:100px;
+    } */
+} 
+    

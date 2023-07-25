@@ -1,0 +1,119 @@
+{% extends 'superuser/base.html' %}
+
+ {% load static %}
+
+{% block content %}
+
+        <div class="form-body">
+            <div class="row">
+                <div class="form-holder">
+                    <div class="form-content">
+                        <div class="form-items">
+        
+                            <h1 class="text-center mb-4">Member Profile</h1> 
+
+                            <img src="{{ member.profilePicture }}"  width="250px" height="250px">
+                    {% comment %} <img src="{{ organizations.logo.url }}" width="250px" height="250px" > {% endcomment %}
+
+
+                            <ul class="list-group">
+                               
+                                  <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                      {% if member.middlename == "" %}
+                                        <div class="fw-bold">Member name:</div>{{member.firstname}} {{member.surname}}
+                                      {% else %}
+                                        <div class="fw-bold">Member name:</div>{{member.firstname}} {{member.middlename}} {{member.surname}}
+                                      {% endif %}
+                                    </div>
+                                  </li>
+                                  <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                      {% if member.gender == 1 %}
+                                      <div class="fw-bold">Gender:</div>Male
+                                      {% elif member.gender == 2 %}
+                                      <div class="fw-bold">Gender:</div>Female
+
+                                      {% else %}
+                                      <div class="fw-bold">Gender:</div>Not specified
+                                      {% endif %}
+                                    </div>
+                                  </li>
+                                  <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                      <div class="fw-bold">Phone:</div>{{member.phone}}
+                                    </div>
+                                  </li>
+                                  <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                      <div class="fw-bold">Email address:</div>{{member.email}}
+                                    </div>
+                                  </li>
+
+                                  <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                      <div class="fw-bold">Date of Birth:</div>{{member.dateOfBirth}}
+                                    </div>
+                                  </li>
+
+                                  <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                      <div class="fw-bold">Country:</div>{{member.nationality}}
+                                    </div>
+                                  </li>
+
+                                
+                                  
+                                  <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                      <div class="fw-bold">Branch:</div>
+                                      {{ member.branchInfo.name }}
+                                    </div>
+                                  </li>
+                                  
+                                  <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                      <div class="fw-bold">Category:</div>
+                                      {{ member.categoryInfo.category }}
+                                    </div>
+                                  </li>
+                                  {% comment %} <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                      <div class="fw-bold">Member Type:</div>
+                                      {% if member.memberType == 1 %}
+                                       Member
+                                      {% else %}
+                                       None
+                                       {% endif %}
+
+                                    </div>
+                                  </li> {% endcomment %}
+                            
+                               
+                                  {% comment %} <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                      <div class="fw-bold">Status:</div>
+                                      {% if member.status == 1 %}
+                                      Active
+                                      {% else %}
+                                      Expired
+                                      {% endif %}
+                                    </div>
+                                  </li> {% endcomment %}
+                                  
+                           
+                              </ul>
+<br/>
+                              <a onclick="window.history.go(-1); return false;"><button type="button" class="btn btn-primary btn-sm">Back</button></a>
+                              {% comment %} <a href="{% url 'client:invoice_details_view' payment.pk %}"><button type="button" class="btn btn-primary btn-sm">Download</button></a> {% endcomment %}
+
+                            
+        
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+     
+   
+{% endblock %}

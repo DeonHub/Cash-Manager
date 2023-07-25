@@ -1,0 +1,70 @@
+{% extends 'client/base.html' %}
+ 
+{% block content %}
+         
+        <div class="form-body">
+            <div class="row">
+                <div class="form-holder">
+                    <div class="form-content">
+                        <div class="form-items">
+        
+                            <h1 class="text-center mb-4">View Donation</h1> 
+
+                            <img src="{{ organizations.logo.url }}" width="250px" height="250px">
+
+                            <ul class="list-group">
+                                  <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                      <div class="fw-bold">Donation name:</div>{{donation.donation_name}}
+                                    </div>
+                                  </li>
+
+                                  <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                      <div class="fw-bold">Target amount:</div>
+                                      {% if donation.target_amount == 0 %}
+                                      None
+                                      {% else %}
+                                      {{donation.target_amount}}
+                                      {% endif %}
+                                    </div>
+                                  </li>
+                             
+
+                               
+                                <li class="list-group-item d-flex justify-content-between align-items-start">
+                                  <div class="ms-2 me-auto">
+                                    <div class="fw-bold">Total Amount Received:</div>GHc {{donation.amount_received}}
+                                  </div>
+                                </li>
+                              
+                                
+                               
+
+                                  <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                      <div class="fw-bold">Last Updated:</div>
+                                      {{donation.date_created}}
+                                    </div>
+                                  </li>
+                              </ul>
+<br/>
+                             
+
+                              <div class="mt-3 text-center">
+                                <a onclick="window.history.go(-1); return false;"><button type="button" class="btn btn-primary btn-sm mr-3">Back</button></a>
+                                {% comment %} <a href="{% url 'superuser:makePayments' assigned.pk %}"><button type="button" class="btn btn-sm ml-3" style="background-color: #006c40; color: #fff">Make Payment</button></a> {% endcomment %}
+
+                                <td><a href="{% url 'superuser:assignDonation' donation.pk %}"><button type="button" class="btn btn-sm" style="background-color: #006c40; color: #fff">Assign Member(s)</button></a></td>
+
+                            </div>
+
+        
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+     
+   
+{% endblock %}

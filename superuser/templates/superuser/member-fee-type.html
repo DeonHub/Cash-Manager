@@ -1,0 +1,8 @@
+<select class="form-select mt-3" name="fee_type" id="fee_type" required>
+    <option selected value="">Fee Type</option>
+    {% for fee_type in fee_types %}
+    <option value="{{ fee_type.id }}" id="{{ fee_type.id }}" >{{ fee_type.fee_type }}</option>
+  {% endfor %}
+</select> 
+
+<br>

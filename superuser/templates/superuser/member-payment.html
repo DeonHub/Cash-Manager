@@ -1,0 +1,74 @@
+
+
+<div class=" mt-3">
+    <input class="form-control" type="text" id="outstanding_bill" name="outstanding_bill"  value="{{ balance.total_invoice }}" readonly >
+</div>
+
+<div class="">
+    <select class="form-select mt-3" id="payment_status" name="payment_status"  onchange="loadTotal()" required>
+        <option selected value="">Payment Status</option>
+        <option value="part" id="part">Part Payment</option>
+        <option value="full" id="full">Full Payment</option>
+    </select>
+</div>
+
+
+{% if balance.account_status == "subscriber" %}
+
+<div class=" mt-3">
+    <input class="form-control" type="text" id="user_type" name="user_type"  value="Subscriber" readonly >
+</div>
+
+
+<div class=" mt-3">
+    {% if balance.expiration_bill > 0 %}
+    <input class="form-control" type="text" id="expiration_bill" name="expiration_bill"  value="{{ balance.expiration_bill }}" readonly >
+    {% else %}
+    <input class="form-control" type="text" id="expiration_bill" name="expiration_bill"  value="0" readonly >
+    {% endif %}
+</div>
+
+
+<div class=" mt-3">
+    <input class="form-control" type="text" id="renewal_duration" name="renewal_duration"  value="{{balance.install_period}} {{balance.install_range}}" readonly >
+</div>
+
+<div class=" mt-3">
+    {% if balance.install_amount >= balance.total_invoice %}
+    <input class="form-control" type="text" id="renewal_bill" name="renewal_bill"  value="{{ balance.total_invoice }}" readonly >
+    {% else %}
+    <input class="form-control" type="text" id="renewal_bill" name="renewal_bill"  value="{{ balance.install_amount }}" readonly >
+    {% endif %}
+</div>
+
+
+<div class=" mt-3">
+    <input class="form-control" type="date" id="end_date" name="end_date"  value="{{ date }}"  hidden>
+</div>
+
+
+
+{% else %}
+
+<div class=" mt-3">
+    <input class="form-control" type="text" id="user_type" name="user_type"  value="Non Subscriber" readonly >
+</div>
+
+{% endif %}
+
+<div class="input-group mt-3">
+    <label class="input-group-text" for="fee_type">Total amount to be paid</label>
+    <input class="form-control" type="text" id="total_amount_due" name="total_amount_due"  placeholder="Amount to be paid" readonly >
+</div>
+
+
+<div class=" mt-3">
+    <input class="form-control" type="text" id="amount_paid" name="amount_paid"  placeholder="Enter amount" onchange="findArrears()" required>
+</div>
+
+
+<div class=" mt-3">
+    <input class="form-control" type="text" id="arrears" name="arrears"  placeholder="Arrears..." readonly >
+</div>
+
+

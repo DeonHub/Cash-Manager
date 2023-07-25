@@ -1,0 +1,24 @@
+
+{% for fee_items in fee_items %}
+<div class="form-check mt-2">
+    <input type="checkbox" class="fee_items form-check-input" id="fee_type{{forloop.counter}}" name="{{ fee_items.fee_items }}" value="{{ fee_items.id }}" onchange="checkFunction()">
+    <label for="fee_type">{{ fee_items.fee_items }}</label>
+</div>
+{% endfor %}
+
+
+<br>
+
+<label for="fee_items">Enter Fee amount</label>
+{% for fee_items in fee_items %}
+<div class="row g-2" id="item_amount{{forloop.counter}}" style="display: none">
+    <p class="col-auto">{{ fee_items.fee_items }}: <input class="col-auto amount form-control-sm ml-3" type="text" id="amount{{forloop.counter}}" name="items_amount[]" placeholder="Enter amount..." ></p>
+ </div>
+ {% endfor %} 
+
+
+ {% comment %} {% for fee_items in fee_items %}
+<div id="item_amount{{forloop.counter}}" style="display: none">
+ <p>{{ fee_items.fee_items }}: <input type="text" class="amount" id="amount{{forloop.counter}}" name="items_amount[]"></p>
+</div>
+{% endfor %}  {% endcomment %}

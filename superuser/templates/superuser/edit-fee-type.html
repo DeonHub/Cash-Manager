@@ -1,0 +1,43 @@
+{% extends 'superuser/base.html' %}
+ 
+{% block content %}
+
+{% comment %} <form action="" method="post">
+    {% csrf_token %}
+    <input type='text' name='fee_type' value="{{fee_type.fee_type}}" id="fee_type" >
+    <input type="submit" value="Submit"><br>
+    <input type=button value="Previous Page" onClick="javascript:history.go(-1);">
+</form> {% endcomment %}
+
+
+<div class="form-body" style="margin-top:-15%">
+    <div class="row">
+        <div class="form-holder">
+            <div class="form-content">
+                <div class="form-items">
+                    <h2 class="text-center mb-3" >Edit Fee Type</h2>
+
+                    <form class="" action="" method="post" >
+
+                        {% csrf_token %}
+                      
+                        <div class="input-group mt-3">
+                            <label class="input-group-text" for="fee_type">Fee Type</label>
+                            <input class="form-control" type="text" name='fee_type' value="{{ fee_type.fee_type }}" id="fee_type" required/>
+                        </div>
+
+                        <div class="mt-3 text-center">
+                            <a onclick="window.history.go(-1); return false;"><button type="button" class="btn btn-primary btn-sm mr-3" >Back</button></a>
+  
+                            <button id="submit" type="submit" class="btn btn-sm ml-3" style="background-color: #006c40; color: #fff">Submit</button>
+                        </div>
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    
+{% endblock %}

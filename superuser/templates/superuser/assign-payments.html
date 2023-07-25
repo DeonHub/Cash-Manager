@@ -1,0 +1,248 @@
+{% extends 'superuser/base.html' %}
+ 
+{% block content %}
+
+               
+<div class="form-body">
+  <div class="row">
+      <div class="form-holder">
+          <div class="form-content">
+              <div class="form-items">
+                <h2 class="text-center mb-5" >Assign Member(s)</h2>
+
+                  <form action="" method="post" id="assignPaymentForm" name="" data-invoice-url="{% url 'superuser:ajax_load_invoice' %}" >
+
+                      {% csrf_token %}
+
+                  <div class="input-group mt-3">
+                    <span class="input-group-text" id="basic-addon3">Branch</span>
+                    <input class="form-control" type="text" id="branch" name="branch" value="{{ invoice.branch }}" readonly >
+                  </div>
+
+                  <div class="input-group mt-3">
+                    <span class="input-group-text" id="basic-addon3">Member Category</span>
+                    <input class="form-control" type="text" id="member_category" name="member_category" value="{{ invoice.member_category }}" readonly >
+                  </div>
+
+
+                  <div class="input-group mt-3">
+                    <span class="input-group-text" id="basic-addon3">Group</span>
+                    <input class="form-control" type="text" id="group" name="group" value="{{ invoice.group }}" readonly >
+                  </div>
+
+
+                  <div class="input-group mt-3">
+                    <span class="input-group-text" id="basic-addon3">Subgroup</span>
+                    <input class="form-control" type="text" id="subgroup" name="subgroup" value="{{ invoice.subgroup }}" readonly >
+                  </div>
+
+
+                  <div class="input-group">
+                    <input class="form-control" type="text" id="invoice_type" name="invoice_type" value="{{ invoice.invoice_type }}" hidden>
+                  </div>
+
+                  <div class="input-group">
+                    <input class="form-control" type="text" id="member_type" name="member_type" value="{{ invoice.member_type }}" hidden>
+                  </div>
+
+                  <div class="input-group mt-3">
+                    <span class="input-group-text" id="basic-addon3">Invoice Type</span>
+                    {% if invoice.invoice_type == 'expiry' %}
+                    <input class="form-control" type="text" value="Expiry" readonly >
+                    {% else %}
+                    <input class="form-control" type="text" value="Non Expiry" readonly >
+
+                    {% endif %}
+                  </div>
+
+                  <div class="input-group mt-3">
+                    <span class="input-group-text" id="basic-addon3">Member Type</span>
+                    {% if invoice.member_type == 'individual' %}
+                    <input class="form-control" type="text" value="Individual Members" readonly >
+                    {% else %}
+                    <input class="form-control" type="text" value="Organizational Members" readonly >
+
+                    {% endif %}
+                  </div>
+
+
+
+
+               <div class="input-group mt-3">
+                <label class="input-group-text" for="fee_type">Fee Type</label>
+                <select class="form-select" id="fee_type" name="fee_type" required>
+                    <option value="{{ invoice.fee_type.id }}" id="{{ fee_type.id }}">{{ invoice.fee_type }}</option>
+                </select>
+              </div>
+
+
+              <div class="input-group mt-3">
+                <label class="input-group-text" for="fee_type">Fee Description</label>
+                <select class="form-select" id="fee_description" name="fee_description" required>
+                  <option value="{{ invoice.fee_description.id }}" id="{{ fee_description.id }}">{{ invoice.fee_description }}</option>
+                </select>
+              </div>
+
+
+               <div class="input-group mt-3" id="total_invoice">
+                <label class="input-group-text" for="fee_type">Total amount({{ base }})</label>
+                <input class="form-control" type="text" id="total" value="{{ invoice.total_amount }}" name="total_invoice" readonly > 
+               </div>
+
+               <br>
+
+               <div class="form-check">
+                            
+                <input class="form-check-input" type="checkbox" id="promo" name="promo" value="promo" onchange="pullDisc(this)">
+                <label>Give Discount?</label><br/>
+                
+            </div>
+
+          
+              <div id="disc" style="display:none;">
+                <div class="row">
+                <div class="col">
+                  <input class="form-control" type="number" id="discount" name="discount" placeholder="Enter discount percentage..." onchange="checkDiscount()"> 
+                </div>
+                <div class="col " >
+                  <input class="form-control" type="text" id="discounted_amount"  name="discounted_amount" placeholder="Discounted amount..." readonly > 
+                </div>
+              </div>
+            </div>
+
+
+<br>
+
+
+               <div class="input-group mt-3" >
+                <label class="input-group-text" for="member">Select Member</label>
+                <select class="js-data-example-ajax form-select" name="member" id="member">
+                  <option selected value="">Member</option>
+
+                  {% if invoice.member_type == 'individual' %}
+
+                  {% for member in response %}
+                    {% if member.middlename == "" %}
+                      <option value="{{ member.id }}" id="{{member.id }}">{{ member.firstname }} {{ member.surname }}</option>
+                    {% else %}
+                      <option value="{{ member.id }}" id="{{member.id }}">{{ member.firstname }} {{ member.middlename }} {{ member.surname }}</option>
+                    {% endif %}
+
+                    {% empty %}
+                    <option value="" id="" >No member in selected groupings</option>
+
+                  {% endfor %}
+
+                  {% else %}
+
+                    {% for member in answer %}
+                    
+                      <option value="{{ member.id }}" id="{{ member.id }}">{{ member.organizationName }}</option>
+                    
+                    {% empty %}
+
+                    <option value="" id="" >No member in selected groupings</option>
+
+                  {% endfor %}
+
+
+                  {% endif %}
+               
+               </select>
+           </div>
+
+           
+           <div class="form-check mt-3">
+                <input type="checkbox" class="fee_items form-check-input" id="all_members" name="all_members" value="all_members" onchange="disbleMembers(this)">
+                <label for="fee_type">Assign to all members</label>
+            </div> 
+
+
+
+              {% if invoice.invoice_type == 'expiry' %}
+              
+               <p  class=" mt-3">Payment Duration</p>
+               {% for period in period %}
+
+               {% if period.name != 'None' %}
+               <div class="form-check mt-3">
+              <input type="radio" class="form-check-input" name="install_range" value="{{ period.name }}" id="install{{ forloop.counter }}" onchange="radioCheck(this)" required>
+              <label class="form-check-label" for="install_range">{{ period.name }}</label>
+               </div>
+               {% endif %}
+              {% endfor %}
+
+              <div id="period" style="display:none;">
+                <div class="input-group mt-3" >
+                <label class="input-group-text" for="fee_type">Assign No. of Year(s)</label>
+                <input class="form-control" type="text"  name="no_of_years" placeholder="Enter recurring duration, eg, 1 year, 2 years, 3 years..." >
+                </div>
+              </div>
+
+
+                <div style="display:none;" id="set_pay_date">
+                <div class="input-group mt-3" >
+                  <label class="input-group-text" for="start">Set Payment Expiry Date</label>
+                  <input type="date" class="form-control" name="set_pay_date" >
+                </div>
+              </div>
+
+              <div style="display:none;" id="start_date">
+                <div class="input-group mt-3" >
+                  <label class="input-group-text" for="start_date">Start Date</label>
+                  <input type="date" class="form-control"  name="start_date">
+                </div>
+              </div>
+
+              <div style="display:none;" id="end_date">
+                <div class="input-group mt-3" >
+                  <label class="input-group-text">End Date</label>
+                  <input type="date" class="form-control" name="end_date" min="" >
+                </div>
+              </div>
+
+
+                <div class="input-group mt-3">
+               
+                <input class="form-control" type="text" id="amount" name="install_amount"  placeholder="Enter the amount to be paid"  onchange="checkBill()" disabled hidden>
+                </div>
+
+
+                {% comment %} <div class="input-group"> 
+                  <label class="input-group-text" for="logo">Account Status</label>
+
+                 <select class="form-select" id="account_status" name="account_status" required>
+                  <option selected value="">Account Status</option>
+                  <option value="subscriber" id="subscriber">Subscriber</option>
+                  <option value="non_subscriber" id="non_subscriber">Non Subscriber</option>
+                </select>
+                </div> {% endcomment %}
+
+
+
+                <div class="form-check mt-3">
+                  <input type="checkbox" class="fee_items form-check-input" id="deactivate" name="deactivate" value="deactivate" checked onchange="checkOut(this)">
+                  <label for="fee_type">Deactivate users after account expiry</label>
+              </div>
+
+              <p class="text-danger" id="expire" style="font-size: 15px; display:none;">Members will still have access to account after subscription <br/> expires*</p>
+
+
+              {% endif %}
+            
+
+
+                <div class="mt-3 text-center">
+                  <a onclick="window.history.go(-1); return false;"><button type="button" class="btn btn-primary btn-sm mr-3" >Back</button></a>
+
+                  <button id="submit" type="submit" class="btn btn-sm ml-3" style="background-color: #006c40; color: #fff">Assign</button>
+              </div>
+                  </form>
+
+
+              </div>
+          </div>
+      </div>
+  </div>
+</div> 
+        {% endblock %}

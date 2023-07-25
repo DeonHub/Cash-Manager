@@ -1,0 +1,56 @@
+{% extends 'superuser/base.html' %}
+{% block content %}
+
+{% comment %} <div class="card text-center">
+    <div class="card-body">
+      
+      <form action="" method="post">
+        {% csrf_token %}
+        <div class="form-row">
+          <div class="col-md-4 mb-3">
+            <label for="fee_type">Fee Type</label>
+            <input type="text" class="form-control" name="fee_type" id="fee_type" placeholder="Enter fee type...."  required>
+          </div>
+        </div> 
+        <button class="btn btn-block btn-primary" type="submit">Submit</button>
+      </form>
+    </div>
+
+  </div> {% endcomment %}
+
+
+
+  <div class="form-body" style="margin-top:-8%">
+    <div class="row fee_type">
+        <div class="form-holder">
+            <div class="form-content">
+                <div class="form-items">
+                    <h2 class="text-center mb-3" >Add Donation</h2>
+                    <form class="" action="" method="post" >
+
+                        {% csrf_token %}
+                        <div class="mt-4">
+                           <input class="form-control" type="text" id="donation_name" name="donation_name" placeholder="Enter donation name(eg. Funeral contribution, Project Fund)..."  title="eg. Funeral contribution, Project Fund" required>
+                        </div>
+
+                        <div class="mt-4">
+                            <input class="form-control" type="text" id="target_amount" name="target_amount" placeholder="Enter target amount(optional)..." title="This side is optional">
+                         </div>
+
+                        <div class="mt-3 text-center">
+                            <a onclick="window.history.go(-1); return false;"><button type="button" class="btn btn-primary btn-sm mr-3" >Back</button></a>
+
+                            <button id="submit" type="submit" class="btn btn-sm ml-3" style="background-color: #006c40; color: #fff">Submit</button>
+                        </div>
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

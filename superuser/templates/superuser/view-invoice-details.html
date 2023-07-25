@@ -1,0 +1,51 @@
+{% extends 'superuser/base.html' %}
+ 
+{% block content %}
+
+{% if unlimited %} 
+<a href="{% url 'superuser:setInvoiceDetails' %}"><button class="btn btn-sm fee-type" style="background-color: #f7941d"><p>Set Invoice Details</p></button></a>
+{% endif %}
+
+<br>
+<br>
+<br>
+<div class="table-responsive-md">
+
+<table class="table table-striped" id="invoice_detailx">
+    <thead>
+        <tr>
+            <th>Company Name</th>
+            <th>Signers Name</th>
+            <th></th>
+
+            {% if unlimited %} 
+            <th></th>
+            <th></th>
+            {% endif %}
+
+        </tr>
+    </thead>
+    <tbody>
+      {% csrf_token %}
+
+        {% for invoice_detail in invoice_details %}
+
+        <tr id="{{ invoice_detail.id }}">
+            <td>{{invoice_detail.company_name}}</td>
+            <td>{{invoice_detail.signers_name}}</td>
+            <td><a href="{% url 'superuser:viewOrganizationDetail' pk=invoice_detail.pk %}"><button type="button" class="btn btn-primary btn-sm">View Details</button></a></td>
+
+            {% if unlimited %} 
+            <td><a href="{% url 'superuser:editInvoiceDetails' id=invoice_detail.id %}"><button type="button" class="btn btn-sm" style="background-color: #006c40; color: #fff">Edit Details</button></a></td>
+            <td><a href="{% url 'superuser:deleteInvoiceDetails' id=invoice_detail.id %}" class="detail-delete" id="{{invoice_detail.id }}"><button class="btn btn-danger btn-sm">Delete</button></a></td>
+            {% endif %}
+
+        </tr>
+       
+        {% endfor %}
+
+    </tbody>
+</table>
+
+</div> 
+{% endblock %}

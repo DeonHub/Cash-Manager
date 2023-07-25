@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+ 
+    <link crossorigin="anonymous" media="all" integrity="sha512-ksfTgQOOnE+FFXf+yNfVjKSlEckJAdufFIYGK7ZjRhWcZgzAGcmZqqArTgMLpu90FwthqcCX4ldDgKXbmVMeuQ==" rel="stylesheet" href="https://github.githubassets.com/assets/light-92c7d381038e.css" /><link crossorigin="anonymous" media="all" integrity="sha512-1KkMNn8M/al/dtzBLupRwkIOgnA9MWkm8oxS+solP87jByEvY/g4BmoxLihRogKcX1obPnf4Yp7dI0ZTWO+ljg==" rel="stylesheet" href="https://github.githubassets.com/assets/dark-d4a90c367f0c.css" /><link data-color-theme="dark_dimmed" crossorigin="anonymous" media="all" integrity="sha512-cZa7DZqvMBwD236uzEunO/G1dvw8/QftyT2UtLWKQFEy0z0eq0R5WPwqVME+3NSZG1YaLJAaIqtU+m0zWf/6SQ==" rel="stylesheet" data-href="https://github.githubassets.com/assets/dark_dimmed-7196bb0d9aaf.css" /><link data-color-theme="dark_high_contrast" crossorigin="anonymous" media="all" integrity="sha512-WVoKqJ4y1nLsdNH4RkRT5qrM9+n9RFe1RHSiTnQkBf5TSZkJEc9GpLpTIS7T15EQaUQBJ8BwmKvwFPVqfpTEIQ==" rel="stylesheet" data-href="https://github.githubassets.com/assets/dark_high_contrast-595a0aa89e32.css" /><link data-color-theme="dark_colorblind" crossorigin="anonymous" media="all" integrity="sha512-XpAMBMSRZ6RTXgepS8LjKiOeNK3BilRbv8qEiA/M3m+Q4GoqxtHedOI5BAZRikCzfBL4KWYvVzYZSZ8Gp/UnUg==" rel="stylesheet" data-href="https://github.githubassets.com/assets/dark_colorblind-5e900c04c491.css" /><link data-color-theme="light_colorblind" crossorigin="anonymous" media="all" integrity="sha512-3HF2HZ4LgEIQm77yOzoeR20CX1n2cUQlcywscqF4s+5iplolajiHV7E5ranBwkX65jN9TNciHEVSYebQ+8xxEw==" rel="stylesheet" data-href="https://github.githubassets.com/assets/light_colorblind-dc71761d9e0b.css" /><link data-color-theme="light_high_contrast" crossorigin="anonymous" media="all" integrity="sha512-+J8j3T0kbK9/sL3zbkCfPtgYcRD4qQfRbT6xnfOrOTjvz4zhr0M7AXPuE642PpaxGhHs1t77cTtieW9hI2K6Gw==" rel="stylesheet" data-href="https://github.githubassets.com/assets/light_high_contrast-f89f23dd3d24.css" /><link data-color-theme="light_tritanopia" crossorigin="anonymous" media="all" integrity="sha512-AQeAx5wHQAXNf0DmkvVlHYwA3f6BkxunWTI0GGaRN57GqD+H9tW8RKIKlopLS0qGaC54seFsPc601GDlqIuuHg==" rel="stylesheet" data-href="https://github.githubassets.com/assets/light_tritanopia-010780c79c07.css" /><link data-color-theme="dark_tritanopia" crossorigin="anonymous" media="all" integrity="sha512-+u5pmgAE0T03d/yI6Ha0NWwz6Pk0W6S6WEfIt8veDVdK8NTjcMbZmQB9XUCkDlrBoAKkABva8HuGJ+SzEpV1Uw==" rel="stylesheet" data-href="https://github.githubassets.com/assets/dark_tritanopia-faee699a0004.css" />
+    <link crossorigin="anonymous" media="all" integrity="sha512-EAhBCLIJ/pXHG3Y6yQhs9s53SHV80sjJ+yCwlQtfv7LaVkD+VoEuZBZ5betQJFUNj/5qBSfZk5GFtazEDzWLAg==" rel="stylesheet" href="https://github.githubassets.com/assets/primer-10084108b209.css" />
+    <link crossorigin="anonymous" media="all" integrity="sha512-4cUFwwYgpnyRoJKr15lavpQFa6HaoGIW6sap6JXLP9cQ33dOLfadeyjfJypUJ8GfE8MnAfdfvcNZlgn7oZ70PA==" rel="stylesheet" href="https://github.githubassets.com/assets/global-e1c505c30620.css" />
+    <link crossorigin="anonymous" media="all" integrity="sha512-GoJJcMYNYdY/+aqtxHZlXBjlwzKZXc5jfDbIbKxUHAU4MC50z13jRK0oLJXGA54I0uKMLaBu4x1lfbLIx/HUcg==" rel="stylesheet" href="https://github.githubassets.com/assets/github-1a824970c60d.css" />
+
+ 
+
+    <title>Fee Management System </title>
+
+    {% load static %}
+    {% load crispy_forms_tags %}
+    <link rel="icon" href="{% static 'superuser/media/favicon.jpg' %}" type="image/jpg" />
+   {% comment %} <link rel="stylesheet" href="{% static 'superuser/css/style.css' %}" media="all">
+    <link rel="stylesheet" href="{% static 'superuser/css/side.css' %}" media="all"> {% endcomment %}
+
+    <link rel="stylesheet" href="{% static 'login/css/styles.css' %}" media="all">
+
+  </head>
+
+  <body class="logged-out env-production page-responsive session-authentication" style="word-wrap: break-word;">
+    
+
+    <div class="position-relative js-header-wrapper ">
+      {% comment %} <a href="#start-of-content" class="px-2 py-4 color-bg-accent-emphasis color-fg-on-emphasis show-on-focus js-skip-to-content">Skip to content</a> {% endcomment %}
+      {% comment %} <span data-view-component="true" class="progress-pjax-loader js-pjax-loader-bar Progress position-fixed width-full">
+    <span style="width: 0%;" data-view-component="true" class="Progress-item progress-pjax-loader-bar left-0 top-0 color-bg-accent-emphasis"></span>
+</span>       {% endcomment %}
+      
+
+
+        <div class="header header-logged-out width-full pt-5 pb-4" role="banner">
+  <div class="container clearfix width-full text-center">
+    {% comment %} <a class="header-logo" href="https://github.com/" aria-label="Homepage" data-ga-click="(Logged out) Header, go to homepage, icon:logo-wordmark">
+      <svg height="48" aria-hidden="true" viewBox="0 0 16 16" version="1.1" width="48" data-view-component="true" class="octicon octicon-mark-github">
+    <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+</svg> {% endcomment %}
+    </a>
+  </div>
+</div>
+
+
+    </div>
+
+
+
+
+
+
+  {% comment %} <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment> {% endcomment %}
+
+
+
+
+
+  <div class="application-main ">
+      <main id="js-pjax-container" >
+    
+  <div class="auth-form" id="login" >     
+
+
+      <div class="auth-form-body mt-3">
+        <div class="image">
+            <img src="{% static 'superuser/media/akfml.jpg' %}" alt="aks" width="100%" height="50%" />
+            {% comment %} <h3 class="text-center">Login</h3> {% endcomment %}
+        </div>
+
+          <form  action=""  method="post">
+            {% csrf_token %} 
+
+           
+              {% comment %} <select class="form-select input-block mt-3" id="role" name="role" required>
+                <option selected value="">Select Role</option>
+                <option value="admin" id="admin">Admin</option>
+                <option value="member" id="member">Member</option>
+              </select> {% endcomment %}
+<br/>
+<br/>
+            {% comment %} <label for="login_field">Email address</label> {% endcomment %}
+            <input type="text" name="email" id="login_field" class="form-control input-block js-login-field mt-2" autocapitalize="off" autocorrect="off" autocomplete="username" placeholder="Email address" required/>
+
+            
+            {% comment %} <label for="password">Password</label> {% endcomment %}
+
+            <input type="password" name="password" id="password" class="form-control form-control input-block js-password-field mt-3" autocomplete="current-password" placeholder="Password" required/>
+            <div class="form-check mt-3">
+                <input type="checkbox" class="form-check-input" id="checkbox" onchange="checkFunction()">
+                <label for="fee_type" style="color: white">Show Password</label>
+            </div>
+            <input type="submit" name="commit" value="Log in" class="btn btn-success btn-sm btn-block mt-3" />
+
+      
+        </form>
+      </div>
+
+
+  </div>
+
+      </main>
+  </div>
+
+
+
+ 
+
+    <div class="Popover js-hovercard-content position-absolute" style="display: none; outline: none;" tabindex="0">
+  <div class="Popover-message Popover-message--bottom-left Popover-message--large Box color-shadow-large" style="width:360px;">
+  </div>
+</div>
+
+    <template id="snippet-clipboard-copy-button">
+  <div class="zeroclipboard-container position-absolute right-0 top-0">
+    <clipboard-copy aria-label="Copy" class="ClipboardButton btn js-clipboard-copy m-2 p-0 tooltipped-no-delay" data-copy-feedback="Copied!" data-tooltip-direction="w">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon m-2">
+    <path fill-rule="evenodd" d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z"></path><path fill-rule="evenodd" d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z"></path>
+</svg>
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none m-2">
+    <path fill-rule="evenodd" d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"></path>
+</svg>
+    </clipboard-copy>
+  </div>
+</template>
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+<script>
+    {% for msg in messages %}
+      swal('{{ msg }}');
+    {% endfor %}
+  </script>
+  </body>
+</html>
+

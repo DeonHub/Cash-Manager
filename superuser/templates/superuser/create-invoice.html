@@ -1,0 +1,133 @@
+{% extends 'superuser/base.html' %}
+ 
+{% block content %}
+
+
+
+
+        <div class="form-body">
+          <div class="row">
+              <div class="form-holder">
+                  <div class="form-content">
+                      <div class="form-items">
+                        <h2 class="text-center mb-3">Add Invoice</h2>
+      
+                          <form action="" method="post" id="myFormID" name="myFormName" data-items-url="{% url 'superuser:ajax_load_items' %}">
+      
+                              {% csrf_token %}
+      
+                              <div class="">
+                                <select class="form-select mt-3" name="branch" id="branch" data-groups-url="{% url 'superuser:ajax_load_groups' %}" data-pid="{{ pid }}" required>
+                                      <option selected value="">Branch</option>
+                                      {% for branch in branches %}
+                                      <option value="{{ branch.id }}" id="{{ branch.id }}" >{{ branch.name }}</option>
+                                      {% endfor %}
+                               </select>
+                              </div>
+
+
+                               <div class="form-check ml-2 mt-2">
+                            
+                                <input class="form-check-input" type="checkbox" id="all_branches" name="all_sectors" value="all_branches" onchange="allBranches(this)">
+                                <label>Assign to all branches</label><br/>
+                                
+                               </div>
+
+                           
+                           <div class="">
+                            <select class="form-select mt-3" name="member_category" id="member_category" required>
+                                  <option selected value="">Member Category</option>
+                                  {% for member_category in member_categories %}
+                            <option value="{{ member_category.id }}" id="{{ member_category.id }}" >{{ member_category.category }}</option>
+                            {% endfor %}
+                           </select>
+                       </div>
+                       <br>
+
+                       <div class="" id="">    
+                        <select class="form-select mt-3" name="group" id="all_groups" data-subgroups-url="{% url 'superuser:ajax_load_subgroups' %}" data-pid="{{ pid }}">
+                              <option selected value="">Group</option>
+                       </select>
+                       </div>
+
+                       <div class="form-check ml-2 mt-2">
+                            
+                        <input class="form-check-input" type="checkbox" id="all_groups_check" name="all_sectors" value="all_groups" onchange="allGroups(this)">
+                        <label>Assign to all groups</label><br/>
+                        
+                       </div>
+
+
+
+                       <div class="">    
+                        <select class="form-select mt-3" name="subgroup" id="all_subgroups">
+                              <option selected value="">Subgroup</option>
+                       </select>
+                       </div>
+
+                       <div class="form-check ml-2 mt-2">
+                            
+                        <input class="form-check-input" type="checkbox" id="all_subgroups_check" name="all_sectors" value="all_subgroups" onchange="allSubgroups(this)">
+                        <label>Assign to all subgroups</label><br/>
+                        
+                       </div>
+
+                       <br>
+
+                       <div class="">
+                        <select class="form-select mt-3" name="invoice_type" id="invoice_type" required>
+                              <option selected value="">Invoice Type</option>
+                              <option value="expiry">Expiry</option>
+                              <option value="non_expiry">Non Expiry</option>
+                           
+                       </select>
+                      </div>
+
+                      <div class="">
+                        <select class="form-select mt-3" name="member_type" id="member_type" required>
+                              <option selected value="">Member Type</option>
+                              <option value="individual">Individual Members</option>
+                              <option value="organizational">Organizational Members</option>
+                           
+                       </select>
+                      </div>
+
+
+                       <div class="">    
+                        <select class="form-select mt-3" name="fee_type" id="fee_type_id" required>
+                              <option selected value="">Fee Type</option>
+                              {% for fee_type in fee_type %}
+                              <option value="{{ fee_type.id }}" id="{{ fee_type.id }}" >{{ fee_type.fee_type }}</option>
+                            {% endfor %}
+                       </select>
+                       </div>
+
+
+                       <div class="">    
+                        <select class="form-select mt-3" name="fee_description" id="fee_description" required>
+                              <option selected value="">Fee Description</option>
+                              {% for fee_description in fee_description %}
+                          <option value="{{ fee_description.id }}" id="{{ fee_description.id }}" >{{ fee_description.fee_description }}</option>
+                        {% endfor %}
+                       </select>
+                       </div>
+
+                       <label for='fee_items' class="mt-3">Select Fee Items</label>
+                        <div id="fee_items"></div>
+
+      
+                        <div class="mt-3 text-center">
+                          <a onclick="window.history.go(-1); return false;"><button type="button" class="btn btn-primary btn-sm mr-3" >Back</button></a>
+
+                          <button id="submit" type="submit" class="btn btn-sm ml-3" style="background-color: #006c40; color: #fff">Submit</button>
+                      </div>
+                          </form>
+      
+      
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      
+          {% endblock %}

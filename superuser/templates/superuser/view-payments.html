@@ -1,0 +1,259 @@
+{% extends 'superuser/base.html' %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+
+{% block content %}
+
+<hr/>
+
+        <br/>
+
+     
+        {% if unlimited %}
+          <input type="checkbox" name="" id="check_all" onClick="toggle(this)" style="margin-left: 1.5%; margin-top: 1%; margin-bottom: -2%;"><label style="margin-left: 1%">Check all</label> 
+
+      
+            </div>
+       
+            <div class="types" style="margin-top: -4%; margin-bottom: -4%;">
+
+                <button id="delete_button" class="btn btn-danger btn-sm" data-delete-url="{% url 'superuser:ajax_delete_payment' %}">Delete selected</button>
+            </div>
+            
+            {% endif %}
+
+      
+        <hr>        
+
+        <form method="get" class="mt-4">
+            {% csrf_token %}
+            <div class="well">
+
+              <div class="row ">
+                
+            <div class="col">
+                <div class="form-group">
+                    {% render_field my_filter.form.branch class="form-control" placeholder="Filter by Branch..."%}
+                  </div>
+            </div>
+            <div class="col">      
+
+                <div class="form-group">
+                  {% render_field my_filter.form.member_category class="form-control"  placeholder="Filter by Member category..."%}
+                </div>
+            </div>
+
+
+
+            <div class="col">
+                <div class="input-group">
+                    {% render_field my_filter.form.group class="form-control"  placeholder="Filter by Group..." %}
+                  </div>
+            </div>
+
+            <div class="col"> 
+              <div class="form-group">
+                {% render_field my_filter.form.subgroup class="form-control" placeholder="Filter by Subgroup..." %}
+              </div>
+          </div>
+
+            </div>
+
+
+            <div class="row ">
+    
+              <div class="col"> 
+                <div class="form-group">
+                  {% render_field my_filter.form.invoice_type class="form-control" placeholder="Filter by Invoice Type..." %}
+                </div>
+            </div>
+
+                <div class="col"> 
+                  <div class="input-group">
+                    <label class="input-group-text">Start date</label>
+                    {% render_field my_filter.form.start_date type="date" class="form-control"  placeholder="Filter by Start date..."%}
+                  </div>
+              </div>
+
+              <div class="col"> 
+                <div class="input-group">
+                  <label class="input-group-text">End date</label>
+                  {% render_field my_filter.form.end_date type="date" class="form-control" placeholder="Filter by End date..." %}
+                </div>
+            </div>
+    
+                <div class="col">
+                    <button type="submit" class="btn btn-sm btn-block" style="float: center;background-color: #f7941d">
+                        <span class="glyphicon glyphicon-search"></span> Filter
+                      </button>
+                    </div>
+    
+                </div>
+ 
+          </div>
+          </form>
+        <hr>        
+        <br/>
+     
+
+
+
+
+
+<div class="table-responsive-md" id="view_payments">
+
+<table class="table table-striped text-center" id="all_payments">
+  {% csrf_token %}
+
+    <thead>
+        <tr class="text-center">
+            <th></th>
+            <th>Member</th>
+            <th>Fee Type</th>
+            <th>Order ID</th>
+            <th>Invoice Type</th>
+            <th>Amount Paid</th>
+            <th>Last Payment</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+
+         {% for payment in payments %}
+
+         {% comment %} {{payment.end_date}} {% endcomment %}
+         
+        <tr id="{{ payment.id }}" >
+            <td><input type="checkbox" name="foo[]" id="delete_payment{{forloop.counter}}" value="{{ payment.id }}"></td>
+            <td>
+              <div class="text-center">
+                  <h6>{{payment.member}}</h6>
+                  {% if payment.fee_type %}
+
+                    {% if payment.end_date != None %}
+
+                        {% if payment.subscription_expiry < today %}
+                          <p class="expired">Expired</p>
+                        {% else %}
+                          <p class="active">Active</p>
+                        {% endif %}
+
+                      {% else %}
+                      <p class="none">None</p>
+                    {% endif %}
+                  {% endif %}
+              </div>
+
+              
+          </td>
+          {% if payment.fee_type %}
+            <td>{{payment.fee_type}}</td>
+            {% else %}
+            <td>Donation</td>
+            {% endif %}
+
+            <td>{{ payment.invoice_no }}</td>
+
+            {% if payment.invoice_type == 'expiry' %}
+            <td>Expiry Invoice</td>
+            {% else %}
+            <td>Non Expiry Invoice</td>
+            {% endif %}
+
+            
+            <td>{{ base }} {{ payment.amount_paid }}</td>
+            
+
+
+            <td>
+                <div class="text-center">
+                <ul style="list-style-type:none">
+                    <li> {{ payment.date_created }}</li>
+                    {% comment %} <li><a href="{% url 'superuser:send_sms' %}"><button class="btn btn-outline-dark btn-sm">Send SMS</button></a></li> {% endcomment %}
+                </ul>
+            </div>
+            </td>
+
+            <td><a href="{% url 'superuser:viewDetails' pk=payment.pk %}"><button type="button" class="btn btn-outline-primary btn-sm">View</button></a></td>
+            {% comment %} <td><a href="{% url 'superuser:invoice_details_view' payment.pk %}"><button type="button" class="btn btn-success btn-sm">Download</button></a></td> {% endcomment %}
+
+          
+            {% if payment.fee_type %}
+            <td><a href="{% url 'superuser:invoice_details_view' pk=payment.pk %}"><button type="button" class="btn btn-success btn-sm">Download</button></a></td>
+            {% comment %} <td><a href="#"><button type="button" class="btn btn-success btn-sm">Download</button></a></td> {% endcomment %}
+            {% else %}
+            <td><a href="{% url 'superuser:donation_details_view' pk=payment.pk %}"><button type="button" class="btn btn-success btn-sm">Download</button></a></td>
+            {% comment %} <td><a href="#"><button type="button" class="btn btn-success btn-sm">Download</button></a></td> {% endcomment %}
+            {% endif %}
+
+
+        </tr>
+
+       {% endfor %} 
+    </tbody>
+</table>
+</div>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+
+{% comment %} {% if payments.has_previous %}  
+<a href="?page=1"> First </a>
+<a href="?page={{ payments.previous_page_number}}"> Previous </a>
+
+{% endif %}  
+
+Page {{ payments.number }} of {{ payments.paginator.num_pages }}
+
+{% if payments.has_next %}  
+<a href="?page={{payments.next_page_number}}"> Next </a>
+<a href="?page={{ payments.paginator.num_pages}}"> Last </a>
+
+{% endif %}  
+
+ {% endcomment %}
+
+
+
+{% comment %} <div class="pages">
+  <div class="mt-3 title">
+  Page {{ payments.number }} of {{ payments.paginator.num_pages }}
+  </div>
+  
+  <div style="float:right;" class="">
+  {% if payments.has_other_pages %}
+  <nav aria-label="Page navigation example">
+  <ul class="pagination">
+      {% if payments.has_previous %}
+      <li class="page-item" id="{{ payments.previous_page_number }}"><span class="page-link">&laquo;</span></li>
+      {% else %}
+      <li class="page-item" class="disabled"><span class="page-link">&laquo;</span></li>
+      {% endif %}
+  
+      {% for i in payments.paginator.page_range %}
+          {% if payments.number == i %}
+          <li class="page-item" class="active"><span class="page-link">{{ i }}</span></li>
+          {% else %}
+          <li class="page-item" id="{{ i }}"><span class="page-link">{{ i }}</span></li>
+          {% endif %}
+      {% endfor %}
+  
+  
+      {% if payments.has_next %}
+      <li class="page-item" id="{{ payments.next_page_number }}"><span class="page-link">&raquo;</span></li>
+      {% else %}
+      <li class="page-item" class="disabled"><span class="page-link">&raquo;</span></li>
+      {% endif %}
+  </ul>
+  </nav>
+  {% endif %}
+  </div>
+  
+  <br/>
+  </div> {% endcomment %}
+{% endblock %}

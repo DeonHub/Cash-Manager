@@ -1,0 +1,160 @@
+{% extends 'superuser/base.html' %}
+ 
+{% block content %}
+         
+        <div class="form-body">
+            <div class="row">
+                <div class="form-holder">
+                    <div class="form-content">
+                        <div class="form-items">
+        
+                            <h1 class="text-center mb-4">Fee Details</h1> 
+
+                            <ul class="list-group">
+                                  <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                      <div class="fw-bold">Member:</div>{{assigned.member}}
+                                    </div>
+                                  </li>
+                                  {% if assigned.account_status %}
+                                  <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                      <div class="fw-bold">Account Status:</div>
+                                      {% if assigned.account_status == 'subscriber' %}
+                                      Subscriber
+                                      {% else %}
+                                      Non Subscriber
+                                      {% endif %}
+                                    </div>
+                                  </li>
+                                  {% endif %}
+                                  {% if assigned.branch %}
+                                <li class="list-group-item d-flex justify-content-between align-items-start">
+                                  <div class="ms-2 me-auto">
+                                    <div class="fw-bold">Branch:</div>{{assigned.branch}}
+                                  </div>
+                                </li>
+                                {% endif %}
+                                {% if assigned.member_category %}
+                                <li class="list-group-item d-flex justify-content-between align-items-start">
+                                  <div class="ms-2 me-auto">
+                                    <div class="fw-bold">Member Category:</div>
+                                    {{assigned.member_category}}
+                                  </div>
+                                </li>
+                                {% endif %}
+                                {% if assigned.group %}
+                                <li class="list-group-item d-flex justify-content-between align-items-start">
+                                  <div class="ms-2 me-auto">
+                                    <div class="fw-bold">Group:</div>
+                                    {{assigned.group}}
+                                  </div>
+                                </li>
+                                {% endif %}
+                                {% if assigned.subgroup %}
+                                <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                      <div class="fw-bold">Subgroup:</div>
+                                      {{assigned.subgroup}}
+                                    </div>
+                                  </li>
+                                  {% endif %}
+
+                                  <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                      <div class="fw-bold">Fee Type:</div>
+                                      {% if assigned.fee_type %}
+                                      {{assigned.fee_type}}
+                                      {% else %}
+                                      {{assigned.donation_name}}
+                                      
+                                      {% endif %}
+                                    </div>
+                                  </li>
+
+                                  <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                      <div class="fw-bold">Invoice Type:</div>
+                                      {% if assigned.invoice_type == 'expiry' %}
+                                      Expiry Invoice
+                                      {% else %}
+                                      Non Expiry Invoice
+                                      {% endif %}
+                                    </div>
+                                  </li>
+
+                                  {% if assigned.total_invoice %}
+                                  <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                      <div class="fw-bold">Total Invoice:</div>
+                                      {{ base }} {{assigned.total_invoice}}
+                                    </div>
+                                  </li>
+
+                                  <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                      <div class="fw-bold">Amount Left:</div>
+                                      {{ base }} {{assigned.expiration_bill}}
+                                    </div>
+                                  </li>
+                                  
+                                  {% else %}
+                                  <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                      <div class="fw-bold">Target amount:</div>
+                                      {{assigned.total_invoice}}
+                                    </div>
+                                  </li>
+                                  {% endif %}
+
+                                  {% if assigned.deadline %}
+                                  <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                      <div class="fw-bold">Payment Deadline:</div>
+                                      {{assigned.deadline}}
+                                    </div>
+                                  </li>
+                                  {% endif %}
+                                  {% if assigned.end_date %}
+                                 <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                      <div class="fw-bold">Account Expiry:</div>
+                                      {{assigned.end_date}}
+                                    </div>
+                                  </li>
+                                  {% endif %}
+
+                                  <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                      <div class="fw-bold">Last Updated:</div>
+                                      {{assigned.date_created}}
+                                    </div>
+                                  </li>
+                              </ul>
+<br/>
+                             
+
+                              <div class="mt-3 text-center">
+                                <a onclick="window.history.go(-1); return false;"><button type="button" class="btn btn-primary btn-sm mr-3">Back</button></a>
+                                {% comment %} <a href="{% url 'superuser:makePayments' assigned.pk %}"><button type="button" class="btn btn-sm ml-3" style="background-color: #006c40; color: #fff">Make Payment</button></a> {% endcomment %}
+
+                                {% if not assigned.fee_type %}
+                                <td><a href="{% url 'superuser:payDonation'  pk=assigned.pk %}"><button type="button" class="btn btn-success btn-sm">Make Payment</button></a></td>
+                                {% else %}
+                                {% if assigned.expiration_bill == 0 %}
+                                <td><a href="javascript:void(0)" ><button type="button" class="btn btn-success btn-sm" disabled>Make Payment</button></a></td>
+                                {% else %}
+                                <td><a href="{% url 'superuser:makePayments' pk=assigned.pk %}"><button type="button" class="btn btn-success btn-sm">Make Payment</button></a></td>
+                                {% endif %}
+                                {% endif %}
+                            </div>
+
+        
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+     
+   
+{% endblock %}

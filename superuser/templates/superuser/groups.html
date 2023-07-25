@@ -1,0 +1,4 @@
+<option selected value="">Group</option>
+{% for group in groups %}
+<option value="{{ group.id }}" id="{{ group.id }}" >{{ group.group }}</option>
+{% endfor %}

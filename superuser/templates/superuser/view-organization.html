@@ -1,0 +1,140 @@
+{% extends 'superuser/base.html' %}
+ 
+{% block content %}
+         
+        <div class="form-body">
+            <div class="row">
+                <div class="form-holder">
+                    <div class="form-content">
+                        <div class="form-items">
+        
+                            <h1 class="text-center mb-4">Organization Details</h1> 
+
+                            <img src="{{ organizations.logo.url }}" width="250px" height="250px">
+
+
+                            <ul class="list-group">
+                                  <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                      <div class="fw-bold">Company name:</div>{{organizations.company_name}}
+                                    </div>
+                                  </li>
+                                  <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                      <div class="fw-bold">Signers name:</div>
+                                      {{organizations.signers_name}}
+                                    </div>
+                                  </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-start">
+                                  <div class="ms-2 me-auto">
+                                    <div class="fw-bold">Contact:</div>{{organizations.contact}}
+                                  </div>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-start">
+                                  <div class="ms-2 me-auto">
+                                    <div class="fw-bold">Email:</div>
+                                    {{organizations.email}}
+                                  </div>
+                                </li>
+                              
+
+
+                              
+                              <li class="list-group-item d-flex justify-content-between align-items-start">
+                                <div class="ms-2 me-auto">
+                                  <div class="fw-bold">Postal Address:</div>
+                                  {{organizations.postal_address}}
+                                </div>
+                              </li>
+
+                                <li class="list-group-item d-flex justify-content-between align-items-start">
+                                  <div class="ms-2 me-auto">
+                                    <div class="fw-bold">Digital Address:</div>
+                                    {{organizations.digital_address}}
+                                  </div>
+                                </li>
+
+                            <li class="list-group-item d-flex justify-content-between align-items-start">
+                              <div class="ms-2 me-auto">
+                                <div class="fw-bold">Website:</div>
+                                <a href="{{organizations.website}}" target="_blank">{{organizations.website}}</a>
+
+                              </div>
+                            </li>
+
+                            <li class="list-group-item d-flex justify-content-between align-items-start">
+                              <div class="ms-2 me-auto">
+                                <div class="fw-bold">Location:</div>
+                                {{organizations.location}}
+                              </div>
+                            </li>
+
+                          <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="ms-2 me-auto">
+                              <div class="fw-bold">Whatsapp:</div>
+                              {{organizations.whatsapp}}
+                            </div>
+                          </li>
+
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                          <div class="ms-2 me-auto">
+                            <div class="fw-bold">Telegram:</div>
+                            {{organizations.telegram}}
+                          </div>
+                        </li>
+
+                      <li class="list-group-item d-flex justify-content-between align-items-start">
+                        <div class="ms-2 me-auto">
+                          <div class="fw-bold">Facebook:</div>
+                          {{organizations.facebook}}
+                        </div>
+                      </li>
+
+                      <li class="list-group-item d-flex justify-content-between align-items-start">
+                        <div class="ms-2 me-auto">
+                          <div class="fw-bold">Twitter:</div>
+                          {{organizations.twitter}}
+                        </div>
+                      </li>
+
+                      <li class="list-group-item d-flex justify-content-between align-items-start">
+                        <div class="ms-2 me-auto">
+                          <div class="fw-bold">Instagram:</div>
+                          {{organizations.instagram}}
+                        </div>
+                      </li>
+
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                      <div class="ms-2 me-auto">
+                        <div class="fw-bold">About Us:</div>
+                        {{organizations.about}}
+                      </div>
+                    </li>
+
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                      <div class="ms-2 me-auto">
+                        <div class="fw-bold">Our Services:</div>
+                        {{organizations.services}}
+                      </div>
+                    </li>
+                  </ul>
+<br/>
+                             
+
+                              <div class="mt-3 text-center">
+                                <a onclick="window.history.go(-1); return false;"><button type="button" class="btn btn-primary btn-sm mr-3">Back</button></a>
+                                
+                                {% if unlimited %}
+                                <a href="{% url 'superuser:editInvoiceDetails' id=organizations.id  %}"><button type="button" class="btn btn-sm ml-3" style="background-color: #006c40; color: #fff">Edit Details</button></a>
+                                {% endif %}
+                            </div>
+
+        
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+     
+   
+{% endblock %}

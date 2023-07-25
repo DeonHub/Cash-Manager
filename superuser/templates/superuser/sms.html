@@ -1,0 +1,89 @@
+{% extends 'superuser/base.html' %}
+ 
+{% block content %}
+
+
+<div class="form-body">
+    <div class="row">
+        <div class="form-holder">
+            <div class="form-content">
+                <div class="form-items">
+                    <h2 class="text-center mb-3" >Send SMS</h2>
+  
+                    <form action="" method="post" id="sendSMSForm" enctype="multipart/form-data" class="row g-4 mt-3">
+                        {% csrf_token %}
+                    
+                        <div class="col-auto">
+                         <div class=" form-check">
+                            <input class="form-check-input" type="radio" name="sms" id="sms" value="sms" required>
+                            <label class="form-check-label" for="sms">
+                              Send SMS
+                            </label>
+                          </div>
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" name="sms" id="voice" value="audio" required onchange="downFile(this)">
+                            <label class="form-check-label" for="voice">
+                              Send Voice
+                            </label>
+                          </div>
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" name="sms" id="web" value="web" required onchange="downFile(this)">
+                            <label class="form-check-label" for="voice">
+                              Send Webmail
+                            </label>
+                          </div>
+                        </div>
+                    
+                        <div class="col-auto">
+                          <textarea type="text" rows="10" cols="90" class="form-control" name="message" id="message" placeholder="Type message here...." required></textarea>
+                        </div>
+                    
+                    
+                        <div class="col-auto d-flex flex-column w-100">
+                            {% comment %} <input type="tel" class="form-control mb-2" name="contact" id="contact" placeholder="Contact(s)...." title="Seperate multiple contacts with a comma" required> {% endcomment %}
+                            <textarea type="text" rows="2" cols="40" class="form-control mb-2" name="contact" id="contact" placeholder="Contact(s)...." title="Seperate multiple contacts with a comma" required></textarea>
+
+                            <div id="audio_class">
+                            <div class="input-group mb-3 " >
+                                <label class="input-group-text" for="audio" id="attach_audio">Attach Audio</label>
+                                <input type="file" class="form-control" name="audio_file" id="audio" accept="audio/*" >
+                              </div>
+                            <p class="text-danger " style="font-size: 13px; margin-top: -2%;">Audio file should not be more than 90mins* </p>
+                          </div>
+
+                              <div id="web_class" style="display:none;">
+                            <div class="input-group mb-3" >
+                              <label class="input-group-text" for="audio" id="attach_audio">Attach File</label>
+                              <input type="file" class="form-control" name="audio_file" id="audio" accept=".doc,.docx,application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" >
+                            </div>
+                          <p class="text-danger" style="font-size: 13px; margin-top: -2%;">File will be sent to receiver* </p>
+                          </div>
+
+                        </div>
+                    
+                         <div class="col-auto ">
+                            <button type="submit" class="btn btn-primary btn-sm mb-3">Send</button>
+                           {% comment %} <button class="btn btn-sm btn-outline-success">Units Left</button> {% endcomment %}
+                    
+                          </div> 
+                    
+                      </form>
+  
+                    {% comment %} <div class="mt-3">
+                      <button id="submit" type="submit" class="btn btn-primary btn-sm">Send SMS</button>
+                   </div> {% endcomment %}
+                   <div class="mt-3">
+                    <button id="submit" type="submit" class="btn btn-outline-success btn-sm">Units Left</button>
+                 </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div> 
+  
+
+   
+ 
+
+
+{% endblock %}

@@ -1,0 +1,214 @@
+{% extends 'client/base.html' %}
+ 
+{% block content %}
+
+        <div class="form-body">
+            <div class="row">
+                <div class="form-holder">
+                    <div class="form-content">
+                        <div class="form-items">
+        
+                            <h1 class="text-center mb-4">Payment Details</h1> 
+
+                            <ul class="list-group">
+                                <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                      <div class="fw-bold">Invoice ID:</div>{{payment.invoice_no}}
+                                    </div>
+                                  </li>
+                                  {% comment %} <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                      <div class="fw-bold">Member:</div>{{payment.member}}
+                                    </div>
+                                  </li> {% endcomment %}
+
+                                  {% if payment.user_type %}
+                                  <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                      <div class="fw-bold">Account Status:</div>{{payment.user_type}}
+                                    </div>
+                                  </li>
+                                  {% endif %}
+{% comment %} 
+                                  {% if payment.branch %}
+                                  <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                      <div class="fw-bold">Branch:</div>{{payment.branch}}
+                                    </div>
+                                  </li>
+                                  {% endif %}
+                                  {% if payment.member_category %}
+                                  <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                      <div class="fw-bold">Member Category:</div>
+                                      {{payment.member_category}}
+                                    </div>
+                                  </li>
+                                  {% endif %}
+                                  {% if payment.group %}
+                                  <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                      <div class="fw-bold">Group:</div>
+                                      {{payment.group}}
+                                    </div>
+                                  </li>
+                                  {% endif %}
+                                  {% if payment.subgroup %}
+                                  <li class="list-group-item d-flex justify-content-between align-items-start">
+                                      <div class="ms-2 me-auto">
+                                        <div class="fw-bold">Subgroup:</div>
+                                        {{payment.subgroup}}
+                                      </div>
+                                    </li>
+                                    {% endif %}
+   {% endcomment %}
+
+
+
+                                  <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                      <div class="fw-bold">Fee Type:</div>
+                                      {% if payment.fee_type %}
+                                      {{payment.fee_type}}
+                                      {% else %}
+                                      {{payment.donation_name}}
+                                      {%endif %}
+                                    </div>
+                                  </li>
+                                  <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                      <div class="fw-bold">Amount Paid:</div>
+                                      {{base}} {{ payment.amount_paid }}
+                                    </div>
+                                  </li>
+
+                                  
+                                  {% if payment.arrears %}
+                                  <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                      <div class="fw-bold">Amount Left:</div>
+                                      {{base}} {{ payment.arrears }}
+                                    </div>
+                                  </li>
+                                  {% endif %}
+
+                                  {% if payment.remarks %}
+                                  <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                      <div class="fw-bold">Remarks:</div>
+                                      {{payment.remarks}}
+                                    </div>
+                                  </li>
+                                  {% endif %}
+
+                                  {% if payment.fee_type %}
+                                  <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                      <div class="fw-bold">Subscription Expiry:</div>
+                                      {% if payment.subscription_expiry %}
+                                      {{ payment.subscription_expiry }}
+                                      {% else %}
+                                      None
+                                      {% endif %}
+                                    </div>
+                                  </li>
+                                  {% endif %}
+                                  <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                      <div class="fw-bold">Paid On:</div>
+                                      {{payment.date_created}}
+                                    </div>
+                                  </li>
+                              </ul>
+<br/>
+                              <a onclick="window.history.go(-1); return false;"><button type="button" class="btn btn-primary btn-sm">Back</button></a>
+
+                              {% if payment.fee_type %}
+                              <td><a href="{% url 'client:invoice_details_view' clid=clid pk=payment.pk %}"><button type="button" class="btn btn-sm ml-3" style="background-color: #006c40; color: #fff">Download</button></a></td>
+                              {% else %}
+                              <td><a href="{% url 'client:donation_details_view' clid=clid pk=payment.pk %}"><button type="button" class="btn btn-sm ml-3" style="background-color: #006c40; color: #fff">Download</button></a></td>
+                              {% endif %}
+
+
+                            
+
+                            {% comment %} <form action="" method="post" id="myFormID" name="myFormName" data-items-url="{% url 'superuser:ajax_load_items' %}">
+        
+                                {% csrf_token %}
+        
+                                <div class="col-md-12">
+                                  <select class="form-select mt-3" name="branch" id="branch" required>
+                                        <option selected value="">Branch</option>
+                                        {% for branch in branches %}
+                                        <option value="{{ branch.name }}" id="{{ branch.id }}" >{{ branch.name }}</option>
+                                        {% endfor %}
+                                 </select>
+                             </div>
+  
+                             
+                             <div class="col-md-12">
+                              <select class="form-select mt-3" name="member_category" id="member_category" required>
+                                    <option selected value="">Member Category</option>
+                                    {% for member_category in member_categories %}
+                              <option value="{{ member_category.category }}" id="{{ member_category.id }}" >{{ member_category.category }}</option>
+                              {% endfor %}
+                             </select>
+                         </div>
+  
+                         <div class="col-md-12">    
+                          <select class="form-select mt-3" name="group" id="group" required>
+                                <option selected value="">Group</option>
+                                {% for group in groups %}
+                                <option value="{{ group.group }}" id="{{ group.id }}" >{{ group.group }}</option>
+                                {% endfor %}
+                         </select>
+                         </div>
+  
+  
+                         <div class="col-md-12">    
+                          <select class="form-select mt-3" name="subgroup" id="subgroup" required>
+                                <option selected value="">Subgroup</option>
+                                {% for subgroup in subgroups %}
+                                <option value="{{ subgroup.subgroup }}" id="{{ subgroup.id }}" >{{ subgroup.subgroup }}</option>
+                                {% endfor %}
+                         </select>
+                         </div>
+  
+  
+                         <div class="col-md-12">    
+                          <select class="form-select mt-3" name="fee_type" id="fee_type_id" required>
+                                <option selected value="">Fee Type</option>
+                                {% for fee_type in fee_type %}
+                                <option value="{{ fee_type.id }}" id="{{ fee_type.id }}" >{{ fee_type.fee_type }}</option>
+                              {% endfor %}
+                         </select>
+                         </div>
+  
+  
+                         <div class="col-md-12">    
+                          <select class="form-select mt-3" name="fee_description" id="fee_description" required>
+                                <option selected value="">Fee Description</option>
+                                {% for fee_description in fee_description %}
+                            <option value="{{ fee_description.id }}" id="{{ fee_description.id }}" >{{ fee_description.fee_description }}</option>
+                          {% endfor %}
+                         </select>
+                         </div>
+  
+                         <label for='fee_items' class="mt-3">Select Fee Items</label>
+                          <div id="fee_items"></div>
+  
+        
+                                <div class="mt-3">
+                                    <button id="submit" type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            </form> {% endcomment %}
+        
+        
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+     
+   
+{% endblock %}
